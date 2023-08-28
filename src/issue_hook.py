@@ -57,7 +57,6 @@ async def parse_milestone_release_note(event, gl):
                 )
         except Exception as e:
             message = str(e)
-            logging.error(e)
 
         url = f"/projects/{project_id}/issues/{idd}/notes"
         await gl.post(url, data={"body": message})

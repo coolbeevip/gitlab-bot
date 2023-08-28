@@ -30,10 +30,10 @@ msgstr "Issue is required."
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
-msgstr "😊The review src verifies success and approves the merge request."
+msgstr "😊Review validation success and approves the merge request."
 
 msgid "bot_review_fails"
-msgstr "💔Review src validation fails and approval has been revoked. {error_message)}"
+msgstr "💔Review validation fails and approval has been revoked. {error_message}"
 
 msgid "invalid_commit_message"
 msgstr ""
@@ -50,7 +50,7 @@ msgstr "Email username and address do not match. Please make sure that the usern
 "\"{commit_author_name}\" matches the email address \"{commit_author_email}\"."
 
 msgid "invalid_bot_action"
-msgstr "Invalid src action, the correct action format is {action}"
+msgstr "Invalid bot action, the correct action format is {action}"
 
 msgid "milestone_release_note"
 msgstr "Milestone {milestone} release notes: \n"

@@ -148,5 +148,5 @@ class MergeRequestHooks:
         # merge_request_title = event.data["merge_request"]["title"]
         merge_request_state = event.data["merge_request"]["state"]  # opened
         if merge_request_state == "opened":
-            if "/src-review" in note:
+            if "/bot-review" in note:
                 await check_commit(event, gl)
