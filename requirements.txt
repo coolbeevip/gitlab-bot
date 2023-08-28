@@ -1,0 +1,1 @@
+gidgetlab[aiohttp]>=1.0.0

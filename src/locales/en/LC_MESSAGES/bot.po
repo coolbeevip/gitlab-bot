@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-24 13:19+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: merge_request_hook.py:16
+msgid "commit_subject_max_length"
+msgstr "The subject line must not exceed 50 characters."
+
+#: merge_request_hook.py:27
+msgid "milestone_is_required"
+msgstr "Milestone is required."
+
+msgid "issue_num_is_required"
+msgstr "Issue is required."
+
+#: merge_request_hook.py:83
+msgid "bot_review_success"
+msgstr "😊The review src verifies success and approves the merge request."
+
+msgid "bot_review_fails"
+msgstr "💔Review src validation fails and approval has been revoked. {error_message)}"
+
+msgid "invalid_commit_message"
+msgstr ""
+"Invalid commit message subject '{commit_msg}', for examples:\n"
+"\n"
+"{git_commit_subject_example_markdown}"
+
+msgid "invalid_email_address"
+msgstr "Invalid email address \"{commit_author_email}\". must be from "
+"\"@{gitlab_email_domain}\" domain. Please provide a valid email address."
+
+msgid "email_username_not_match"
+msgstr "Email username and address do not match. Please make sure that the username "
+"\"{commit_author_name}\" matches the email address \"{commit_author_email}\"."
+
+msgid "invalid_bot_action"
+msgstr "Invalid src action, the correct action format is {action}"
+
+msgid "milestone_release_note"
+msgstr "Milestone {milestone} release notes: \n"
+"{notes}"
+
+msgid "milestone_not_found"
+msgstr "Milestone {milestone} not found"
