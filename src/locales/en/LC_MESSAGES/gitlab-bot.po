@@ -26,18 +26,22 @@ msgid "milestone_is_required"
 msgstr "Milestone is required."
 
 msgid "issue_num_is_required"
-msgstr "Issue is required."
+msgstr "Merge requests can only be merged if the source branch is associated with an existing issue."
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
 msgstr "😊Review validation success and approves the merge request."
+"\n"
+"* ✅ git username pass\n"
+"* ✅ git email pass\n"
+"* ✅ git commit message pass\n"
 
 msgid "bot_review_fails"
-msgstr "💔Review validation fails and approval has been revoked. {error_message}"
+msgstr "🙁Review validation fails and approval has been revoked. **{error_message}**"
 
 msgid "invalid_commit_message"
 msgstr ""
-"Invalid commit message subject '{commit_msg}', for examples:\n"
+"Invalid commit message subject '{commit_msg}', for examples:"
 "\n"
 "{git_commit_subject_example_markdown}"
 

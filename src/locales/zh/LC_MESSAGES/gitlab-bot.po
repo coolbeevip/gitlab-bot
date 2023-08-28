@@ -26,16 +26,18 @@ msgid "milestone_is_required"
 msgstr "必须选择里程碑"
 
 msgid "issue_num_is_required"
-msgstr "请至少关联一个问题"
+msgstr "只有当源分支与现有问题相关联时，才能合并合并请求"
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
 msgstr "😊合并请求验证成功，批准合并请求。"
+"\n"
+"* ✅ git username pass\n"
+"* ✅ git email pass\n"
+"* ✅ git commit message pass\n"
 
 msgid "bot_review_fails"
-msgstr "💔合并请求验证失败，并撤回批准。\n"
-"\n"
-"{error_message}"
+msgstr "🙁合并请求验证失败，并撤回批准。**{error_message}**"
 
 msgid "invalid_commit_message"
 msgstr "无效的提示消息标题 '{commit_msg}'， 例如:\n"

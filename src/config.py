@@ -16,20 +16,21 @@ import os
 
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE = """
-<type>: <description>
+\<type>: \<description>
 
-feat: Add authentication module   
-fix: Resolve issue with login not working
-docs: Update README with installation instructions
-style: Format code according to the coding guidelines
-refactor: Extract reusable function for file upload
-test: Add unit tests for payment processing module
-build: Upgrade to Node.js version 14.0
-ci: Update Travis CI configuration for better test coverage
-chore: Update .gitignore file
+* feat: Add authentication module   
+* fix: Resolve issue with login not working
+* docs: Update README with installation instructions
+* style: Format code according to the coding guidelines
+* refactor: Extract reusable function for file upload
+* test: Add unit tests for payment processing module
+* build: Upgrade to Node.js version 14.0
+* ci: Update Travis CI configuration for better test coverage
+* chore: Update .gitignore file
 """
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE = 100
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE = "false"
+DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")
@@ -55,3 +56,6 @@ bot_git_commit_subject_max_length = int(
 bot_gitlab_merge_request_milestone_required = (os.getenv("BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED",
                                                          DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE)
                                                .lower() == "true")
+bot_gitlab_merge_request_issue_required = (os.getenv("BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED",
+                                                     DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE)
+                                           .lower() == "true")

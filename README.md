@@ -58,3 +58,8 @@ Regular expression pattern and example commit subjects to validate and provide g
 
 Milestone is required when creating a merge request in GitLab. Default value is false.
 
+**`BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED`**
+
+Merge requests can only be merged if the source branch is associated with an existing issue. Default value is false.
+
+

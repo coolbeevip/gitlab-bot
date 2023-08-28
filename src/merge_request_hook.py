@@ -19,7 +19,7 @@ from src.config import (
     bot_git_commit_subject_max_length,
     bot_git_commit_subject_regex,
     bot_git_email_domain,
-    bot_gitlab_merge_request_milestone_required,
+    bot_gitlab_merge_request_milestone_required, bot_gitlab_merge_request_issue_required,
 )
 from src.i18n import _
 from src.logs import print_event
@@ -48,9 +48,10 @@ def check_commit_message(commit_msg):
 
 
 def check_description(description):
-    issue_num_pattern = r"(#\d+)"
-    if not re.search(issue_num_pattern, description):
-        raise Exception(_("issue_num_is_required"))
+    if bot_gitlab_merge_request_issue_required:
+        issue_num_pattern = r"(#\d+)"
+        if not re.search(issue_num_pattern, description):
+            raise Exception(_("issue_num_is_required"))
 
 
 def check_milestone(milestone_id):
@@ -140,6 +141,9 @@ class MergeRequestHooks:
         await check_commit(event, gl)
 
     async def merge_request_updated_event(self, event, gl, *args, **kwargs):
+        await check_commit(event, gl)
+
+    async def merge_request_reopen_event(self, event, gl, *args, **kwargs):
         await check_commit(event, gl)
 
     async def note_merge_request_event(self, event, gl, *args, **kwargs):

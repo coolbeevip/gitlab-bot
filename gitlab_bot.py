@@ -63,6 +63,11 @@ async def merge_request_updated_event(event, gl, *args, **kwargs):
     print_event(event)
     await merge_request_hooks.merge_request_updated_event(event, gl, args, kwargs)
 
+@bot.router.register("Merge Request Hook", action="reopen")
+async def merge_request_updated_event(event, gl, *args, **kwargs):
+    print_event(event)
+    await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
+
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")
 async def note_merge_request_event(event, gl, *args, **kwargs):
