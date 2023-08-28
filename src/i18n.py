@@ -19,6 +19,8 @@ from src.config import bot_language
 
 localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "locales")
 translate = gettext.translation(
-    "src", localedir, fallback=True, languages=[bot_language]
+    "gitlab-bot", localedir, fallback=True, languages=[bot_language]
 )
 _ = translate.gettext
+
+print(_("milestone_release_note"))

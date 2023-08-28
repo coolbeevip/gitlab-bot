@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import logging
 import re
 
 from src.i18n import _
@@ -25,9 +25,9 @@ async def parse_milestone_release_note(event, gl):
     else:
         idd = event.data["issue"]["iid"]
     note = event.data["object_attributes"]["note"]
-    if "/src-release-note" in note:
+    if "/bot-release-note" in note:
         try:
-            pattern = r"/src-release-note\s(\d+\.\d+\.\d+)"
+            pattern = r"/bot-release-note\s(\d+\.\d+\.\d+)"
             match = re.search(pattern, note)
             if match:
                 milestone_name = match.group(1)
@@ -57,6 +57,7 @@ async def parse_milestone_release_note(event, gl):
                 )
         except Exception as e:
             message = str(e)
+            logging.error(e)
 
         url = f"/projects/{project_id}/issues/{idd}/notes"
         await gl.post(url, data={"body": message})

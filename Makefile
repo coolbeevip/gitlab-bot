@@ -10,9 +10,9 @@ fmt:
 	@pflake8 ./src
 
 i18n:
-	xgettext -d base -o src/locales/bot.pot *.py
-	msgfmt -o src/locales/en/LC_MESSAGES/bot.mo src/locales/en/LC_MESSAGES/bot.po
-	msgfmt -o src/locales/zh/LC_MESSAGES/bot.mo src/locales/zh/LC_MESSAGES/bot.po
+	xgettext -d base -o src/locales/gitlab-bot.pot *.py
+	msgfmt -o src/locales/en/LC_MESSAGES/gitlab-bot.mo src/locales/en/LC_MESSAGES/gitlab-bot.po
+	msgfmt -o src/locales/zh/LC_MESSAGES/gitlab-bot.mo src/locales/zh/LC_MESSAGES/gitlab-bot.po
 
 docker-build:
 	export DOCKER_BUILDKIT=1

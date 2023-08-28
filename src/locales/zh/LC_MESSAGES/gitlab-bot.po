@@ -12,49 +12,50 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: en\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: merge_request_hook.py:16
 msgid "commit_subject_max_length"
-msgstr "The subject line must not exceed 50 characters."
+msgstr "主题行不能超过 {commit_subject_max_length} 个字符"
 
 #: merge_request_hook.py:27
 msgid "milestone_is_required"
-msgstr "Milestone is required."
+msgstr "必须选择里程碑"
 
 msgid "issue_num_is_required"
-msgstr "Issue is required."
+msgstr "请至少关联一个问题"
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
-msgstr "😊The review src verifies success and approves the merge request."
+msgstr "😊合并请求验证成功，批准合并请求。"
 
 msgid "bot_review_fails"
-msgstr "💔Review src validation fails and approval has been revoked. {error_message)}"
+msgstr "💔合并请求验证失败，并撤回批准。\n"
+"\n"
+"{error_message}"
 
 msgid "invalid_commit_message"
-msgstr ""
-"Invalid commit message subject '{commit_msg}', for examples:\n"
+msgstr "无效的提示消息标题 '{commit_msg}'， 例如:\n"
 "\n"
 "{git_commit_subject_example_markdown}"
 
 msgid "invalid_email_address"
-msgstr "Invalid email address \"{commit_author_email}\". must be from "
-"\"@{gitlab_email_domain}\" domain. Please provide a valid email address."
+msgstr "无效的用户邮箱地址 \"{commit_author_email}\"。 必须使用来自 "
+"\"@{gitlab_email_domain}\" 域的邮箱， 请提供设置正确的用户邮箱地址。"
 
 msgid "email_username_not_match"
-msgstr "Email username and address do not match. Please make sure that the username "
-"\"{commit_author_name}\" matches the email address \"{commit_author_email}\"."
+msgstr "邮箱用户名与邮箱地址不匹配，请确定邮箱用户名 "
+"\"{commit_author_name}\" 与邮箱地址 \"{commit_author_email}\" 是否匹配。"
 
 msgid "invalid_bot_action"
-msgstr "Invalid src action, the correct action format is {action}"
+msgstr "无效的指令，正确的指令格式是 {action}"
 
 msgid "milestone_release_note"
-msgstr "Milestone {milestone} release notes: \n"
+msgstr "里程碑 {milestone} 发布说明: \n"
 "{notes}"
 
 msgid "milestone_not_found"
-msgstr "Milestone {milestone} not found"
+msgstr "里程碑 {milestone} 没有找到"
