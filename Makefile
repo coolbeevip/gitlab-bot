@@ -16,4 +16,4 @@ i18n:
 
 docker-build:
 	export DOCKER_BUILDKIT=1
-	docker build -t git-bot --cache-from git-bot --build-arg BUILDKIT_INLINE_CACHE=1 .
+	docker build -t coolbeevip/gitlab-bot --cache-from coolbeevip/gitlab-bot --build-arg BUILDKIT_INLINE_CACHE=1 .

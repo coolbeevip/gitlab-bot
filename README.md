@@ -15,7 +15,7 @@ docker run --rm \
 -e BOT_GITLAB_URL="Your Gitlab URL" \
 -e BOT_GITLAB_TOKEN="Your Gitlab Access Token" \
 -p 9998:9998 \
-git-bot
+coolbeevip/gitlab-bot
 ```
 
 ## Environment Variables

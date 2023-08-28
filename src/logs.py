@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import json
+import logging
 
 
 def print_event(event):
-    print(json.dumps(event.data, indent=4, sort_keys=True))
+    logging.info(json.dumps(event.data))

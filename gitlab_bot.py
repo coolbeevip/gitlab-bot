@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import logging
 
 from gidgetlab.aiohttp import GitLabBot
 
@@ -72,4 +73,5 @@ async def note_snippet_event(event, gl, *args, **kwargs):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     bot.run(host=bot_host, port=bot_port)
