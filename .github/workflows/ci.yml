@@ -1,6 +1,13 @@
-name: ansible
+name: ci
 
 on:
+  push:
+    paths:
+      - "src/**"
+      - "*.py"
+      - "*.toml"
+      - "requirements.txt"
+      - ".github/workflows/ci.yml"
   workflow_dispatch:
 
 jobs:
