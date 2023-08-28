@@ -48,7 +48,7 @@ bot_git_email_domain = os.getenv("BOT_GIT_EMAIL_DOMAIN", None)
 # git commits
 bot_git_commit_subject_regex = os.getenv("BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE)
 bot_git_commit_subject_example_markdown = os.getenv("BOT_GIT_COMMIT_SUBJECT_EXAMPLES",
-                                                    DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE)
+                                                    DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE).replace("\\n","\n")
 bot_git_commit_subject_max_length = int(
     os.getenv("BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH", DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE))
 

@@ -22,5 +22,3 @@ translate = gettext.translation(
     "gitlab-bot", localedir, fallback=True, languages=[bot_language]
 )
 _ = translate.gettext
-
-print(_("milestone_release_note"))
