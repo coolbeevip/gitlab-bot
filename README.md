@@ -2,18 +2,29 @@
 
 This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
 
-* Verify if the submitters email domain and username match during Merge requests.
+#### Verify if the submitters email domain and username match during Merge requests.
+
 ![](docs/image-review-invalid-email.png)
 ![](docs/image-review-username-match-email.png)
-* Merge requests can only be merged if the source branch is associated with an existing issue.
+
+#### Merge requests can only be merged if the source branch is associated with an existing issue.
+
 ![](docs/image-review-issue-required.png)
-* Confirm if a milestone has been specified in Merge requests.
+
+#### Confirm if a milestone has been specified in Merge requests.
+
 ![](docs/image-review-milestone-required.png)
-* Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
+
+#### Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
+
 ![](docs/image-review-invalid-message.png)
-* Review Success
+
+#### Review Success
+
 ![](docs/image-review-succeed.png)
-* Generate Release Notes for a designated milestone in Issues by utilizing the /bot-release-note command.
+
+#### Generate Release Notes for a designated milestone in Issues by utilizing the /bot-release-note command.
+
 ![](docs/image-release-note.png)
 
 ## GitLab Event Support
