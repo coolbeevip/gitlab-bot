@@ -1,13 +1,16 @@
 # Gitlab Bot 
 
-This is a Gitlab bot that utilizes webhooks to automate certain tasks:
+This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
 
 * Generate Release Notes for a designated milestone in Issues by utilizing the /bot-release-note command.
 * Verify if the submitters email domain and username match during Merge requests.
 * Confirm if a milestone has been specified in Merge requests.
 * Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
 
+![](docs/image-review-succeed.png)
+
 ## GitLab Event Support
+
 * Push Events (Not yet)
 * Issue Events
 * Comment Events
