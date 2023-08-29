@@ -24,7 +24,7 @@ This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/pr
     * Commits
     * Merge Requests
     * Issues
-    * Code Snippets
+    * Code Snippets (Not yet)
 * Merge Request Events
 * Wiki Page Events (Not yet)
 * Tag Events (Not yet)
