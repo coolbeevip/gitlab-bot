@@ -5,28 +5,28 @@ This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/pr
 #### Verify if the submitters email domain and username match during Merge requests.
 
 
-![](docs/image-review-invalid-email.png)
+>![](docs/image-review-invalid-email.png)
 ![](docs/image-review-username-match-email.png)
 
 #### Merge requests can only be merged if the source branch is associated with an existing issue.
 
-<img align="left" width="1500" src="https://github.com/coolbeevip/gitlab-bot/blob/main/docs/image-review-issue-required.png">
+> ![](docs/image-review-issue-required.png)
 
 #### Confirm if a milestone has been specified in Merge requests.
 
-![](docs/image-review-milestone-required.png)
+> ![](docs/image-review-milestone-required.png)
 
 #### Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
 
-![](docs/image-review-invalid-message.png)
+> ![](docs/image-review-invalid-message.png)
 
 #### Review Success
 
-![](docs/image-review-succeed.png)
+> ![](docs/image-review-succeed.png)
 
 #### Generate Release Notes for a designated milestone in Issues by utilizing the /bot-release-note command.
 
-![](docs/image-release-note.png)
+> ![](docs/image-release-note.png)
 
 ## GitLab Event Support
 
