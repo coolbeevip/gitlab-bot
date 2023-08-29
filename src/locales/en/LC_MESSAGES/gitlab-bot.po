@@ -59,7 +59,7 @@ msgid "invalid_bot_action"
 msgstr "🙁 Invalid bot action, the correct action format is {action}"
 
 msgid "milestone_release_note"
-msgstr "🙁 Milestone {milestone} release notes: \n"
+msgstr "Milestone {milestone} release notes: \n"
 "{notes}"
 
 msgid "milestone_not_found"
