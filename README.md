@@ -7,6 +7,20 @@ This is a Gitlab bot that utilizes webhooks to automate certain tasks:
 * Confirm if a milestone has been specified in Merge requests.
 * Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
 
+## GitLab Event Support
+* Push Events (Not yet)
+* Issue Events
+* Comment Events
+    * Commits
+    * Merge Requests
+    * Issues
+    * Code Snippets
+* Merge Request Events
+* Wiki Page Events (Not yet)
+* Tag Events (Not yet)
+* Pipeline Events (Not yet)
+* Build Events (Not yet)
+
 ## How to use
 
 Starting a Gitlab Bot instance is simple:
