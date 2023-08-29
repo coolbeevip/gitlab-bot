@@ -19,14 +19,14 @@ msgstr ""
 
 #: merge_request_hook.py:16
 msgid "commit_subject_max_length"
-msgstr "主题行不能超过 {commit_subject_max_length} 个字符"
+msgstr "🙁 主题行不能超过 {commit_subject_max_length} 个字符"
 
 #: merge_request_hook.py:27
 msgid "milestone_is_required"
-msgstr "必须选择里程碑"
+msgstr "🙁 必须选择里程碑"
 
 msgid "issue_num_is_required"
-msgstr "只有当源分支与现有问题相关联时，才能合并合并请求"
+msgstr "🙁 只有当源分支与现有问题相关联时，才能合并合并请求"
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
@@ -42,24 +42,24 @@ msgstr "🙁合并请求验证失败，并撤回批准。"
 "{error_message}"
 
 msgid "invalid_commit_message"
-msgstr "无效的提示消息标题 '{commit_msg}'， 例如:\n"
+msgstr "🙁 无效的提示消息标题 '{commit_msg}'， 例如:\n"
 "\n"
 "{git_commit_subject_example_markdown}"
 
 msgid "invalid_email_address"
-msgstr "无效的用户邮箱地址 \"{commit_author_email}\"。 必须使用来自 "
+msgstr "🙁 无效的用户邮箱地址 \"{commit_author_email}\"。 必须使用来自 "
 "\"@{gitlab_email_domain}\" 域的邮箱， 请提供设置正确的用户邮箱地址。"
 
 msgid "email_username_not_match"
-msgstr "邮箱用户名与邮箱地址不匹配，请确定邮箱用户名 "
+msgstr "🙁 邮箱用户名与邮箱地址不匹配，请确定邮箱用户名 "
 "\"{commit_author_name}\" 与邮箱地址 \"{commit_author_email}\" 是否匹配。"
 
 msgid "invalid_bot_action"
-msgstr "无效的指令，正确的指令格式是 {action}"
+msgstr "🙁 无效的指令，正确的指令格式是 {action}"
 
 msgid "milestone_release_note"
 msgstr "里程碑 {milestone} 发布说明: \n"
 "{notes}"
 
 msgid "milestone_not_found"
-msgstr "里程碑 {milestone} 没有找到"
+msgstr "🙁 里程碑 {milestone} 没有找到"

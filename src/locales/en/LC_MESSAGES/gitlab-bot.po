@@ -19,47 +19,47 @@ msgstr ""
 
 #: merge_request_hook.py:16
 msgid "commit_subject_max_length"
-msgstr "The subject line must not exceed {commit_subject_max_length} characters."
+msgstr "🙁 The subject line must not exceed {commit_subject_max_length} characters."
 
 #: merge_request_hook.py:27
 msgid "milestone_is_required"
-msgstr "Milestone is required."
+msgstr "🙁 Milestone is required."
 
 msgid "issue_num_is_required"
 msgstr "Merge requests can only be merged if the source branch is associated with an existing issue."
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
-msgstr "😊Review validation success and approves the merge request."
+msgstr "😊 Review validation success and approves the merge request."
 "\n"
 "* ✅ git username pass\n"
 "* ✅ git email pass\n"
 "* ✅ git commit message pass"
 
 msgid "bot_review_fails"
-msgstr "🙁Review validation fails and approval has been revoked."
+msgstr "🙁 Review validation fails and approval has been revoked."
 "\n"
 "{error_message}"
 
 msgid "invalid_commit_message"
 msgstr ""
-"Invalid commit message subject '{commit_msg}', for examples:"
+"🙁 Invalid commit message subject '{commit_msg}', for examples:"
 "\n"
 "{git_commit_subject_example_markdown}"
 
 msgid "invalid_email_address"
-msgstr "Invalid email address \"{commit_author_email}\". must be from "
+msgstr "🙁 Invalid email address \"{commit_author_email}\". must be from "
 "\"@{gitlab_email_domain}\" domain. Please provide a valid email address."
 
 msgid "email_username_not_match"
-msgstr "Email username and address do not match. Please make sure that the username "
+msgstr "🙁 Email username and address do not match. Please make sure that the username "
 "\"{commit_author_name}\" matches the email address \"{commit_author_email}\"."
 
 msgid "invalid_bot_action"
-msgstr "Invalid bot action, the correct action format is {action}"
+msgstr "🙁 Invalid bot action, the correct action format is {action}"
 
 msgid "milestone_release_note"
-msgstr "Milestone {milestone} release notes: \n"
+msgstr "🙁 Milestone {milestone} release notes: \n"
 "{notes}"
 
 msgid "milestone_not_found"
