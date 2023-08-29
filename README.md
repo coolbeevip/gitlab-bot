@@ -28,14 +28,6 @@ These variables are used to configure the GitLab bot's authentication with the G
 - `BOT_GITLAB_URL`: The URL of the GitLab instance the bot will be interacting with.
 - `BOT_GITLAB_TOKEN`: The token used to authenticate the bot with the GitLab API.
 
-For example, you can set these variables in your shell environment:
-
-```shell
-BOT_GITLAB_USERNAME="coolbeevip"
-BOT_GITLAB_URL="http://127.0.0.1:8081"
-BOT_GITLAB_TOKEN="xxxxxx"
-```
-
 **`BOT_LANGUAGE`** 
 
 Supports both Chinese (zh) and English (en) languages by default.
@@ -51,10 +43,6 @@ This configuration specifies the email domain that will be used for email addres
 ```shell
 BOT_GIT_EMAIL_DOMAIN=gmail.com
 ```
-
-By setting this value, all Git commits made by the bot will have email addresses with the specified domain. This can be useful for distinguishing bot-generated commits from other commits in a project.
-
-Please note that this configuration assumes that the email address for the bot is already set up and valid.
 
 **`BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH`**
 
@@ -82,5 +70,5 @@ In GitLab, it is necessary to set a milestone when creating a merge request. By 
 
 **`BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED`**
 
-Merge requests can only be merged if the source branch is associated with an existing issue. The default value is set to false.
+Merge requests can only be merged if the source branch is associated with an existing issue. By default, this requirement is disabled.
 
