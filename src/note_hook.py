@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class NoteHooks:
     async def note_commit_event(self, event, gl, *args, **kwargs):
         print(event.data)

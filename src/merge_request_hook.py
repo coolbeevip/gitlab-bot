@@ -19,7 +19,8 @@ from src.config import (
     bot_git_commit_subject_max_length,
     bot_git_commit_subject_regex,
     bot_git_email_domain,
-    bot_gitlab_merge_request_milestone_required, bot_gitlab_merge_request_issue_required,
+    bot_gitlab_merge_request_issue_required,
+    bot_gitlab_merge_request_milestone_required,
 )
 from src.i18n import _
 from src.logs import print_event
@@ -35,7 +36,10 @@ def check_changes(gl, project_id, iid):
 def check_commit_message(commit_msg):
     if len(commit_msg) > bot_git_commit_subject_max_length:
         raise Exception(
-            _("commit_subject_max_length").format(commit_subject_max_length=bot_git_commit_subject_max_length))
+            _("commit_subject_max_length").format(
+                commit_subject_max_length=bot_git_commit_subject_max_length
+            )
+        )
 
     regex = re.compile(bot_git_commit_subject_regex)
     if re.search(regex, commit_msg) is None:

@@ -50,9 +50,15 @@ BOT_GIT_EMAIL_DOMAIN=gmail.com
 
 Maximum character length allowed for Git commit subjects. Default value is 100.
 
-**`BOT_GIT_COMMIT_SUBJECT_REGEX` / `BOT_GIT_COMMIT_SUBJECT_EXAMPLES`**
+**`BOT_GIT_COMMIT_SUBJECT_REGEX` / `BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN` / `BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED`**
 
-Regular expression pattern and example commit subjects to validate and provide guidance for Git commit messages. E.g.: [Conventional Commits Specification](https://www.conventionalcommits.org/)
+Regular expression pattern [Conventional Commits Specification](https://www.conventionalcommits.org/) and example commit subjects to validate and provide guidance for Git commit messages. E.g.:
+
+```shell
+BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED="true"
+BOT_GIT_COMMIT_SUBJECT_REGEX="^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
+BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN="* feat: Add authentication module\n* fix: Resolve issue with login not working\n* docs: Update README with installation instructions\n* style: Format code according to the coding guidelines\n* refactor: Extract reusable function for file upload\n* test: Add unit tests for payment processing module\n* build: Upgrade to Node.js version 14.0\n* ci: Update Travis CI configuration for better test coverage\n* chore: Update .gitignore file"
+```
 
 **`BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED`**
 

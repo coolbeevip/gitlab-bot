@@ -14,10 +14,10 @@
 
 import os
 
-DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
-DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE = """
-\<type>: \<description>
-
+DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = (
+    "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
+)
+DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN_VALUE = """
 * feat: Add authentication module   
 * fix: Resolve issue with login not working
 * docs: Update README with installation instructions
@@ -31,6 +31,7 @@ DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE = """
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE = 100
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
+DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
 
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")
@@ -46,16 +47,39 @@ bot_gitlab_token = os.environ["BOT_GITLAB_TOKEN"]
 bot_git_email_domain = os.getenv("BOT_GIT_EMAIL_DOMAIN", None)
 
 # git commits
-bot_git_commit_subject_regex = os.getenv("BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE)
-bot_git_commit_subject_example_markdown = os.getenv("BOT_GIT_COMMIT_SUBJECT_EXAMPLES",
-                                                    DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_VALUE).replace("\\n","\n")
+bot_git_commit_subject_regex_enabled = (
+    os.getenv(
+        "BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED",
+        DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED,
+    ).lower()
+    == "true"
+)
+bot_git_commit_subject_regex = os.getenv(
+    "BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE
+)
+bot_git_commit_subject_example_markdown = os.getenv(
+    "BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN",
+    DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN_VALUE,
+).replace("\\n", "\n")
 bot_git_commit_subject_max_length = int(
-    os.getenv("BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH", DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE))
+    os.getenv(
+        "BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH",
+        DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE,
+    )
+)
 
 # gitlab merge request
-bot_gitlab_merge_request_milestone_required = (os.getenv("BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED",
-                                                         DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE)
-                                               .lower() == "true")
-bot_gitlab_merge_request_issue_required = (os.getenv("BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED",
-                                                     DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE)
-                                           .lower() == "true")
+bot_gitlab_merge_request_milestone_required = (
+    os.getenv(
+        "BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED",
+        DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE,
+    ).lower()
+    == "true"
+)
+bot_gitlab_merge_request_issue_required = (
+    os.getenv(
+        "BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED",
+        DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE,
+    ).lower()
+    == "true"
+)
