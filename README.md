@@ -2,11 +2,13 @@
 
 This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
 
-#### Verify if the submitters email domain and username match during Merge requests.
+#### Verify if the submitters email domain during Merge requests.
 
+> ![](docs/image-review-invalid-email.png)
 
->![](docs/image-review-invalid-email.png)
-![](docs/image-review-username-match-email.png)
+#### Verify if the submitters email username and username match during Merge requests.
+
+> ![](docs/image-review-username-match-email.png)
 
 #### Merge requests can only be merged if the source branch is associated with an existing issue.
 
