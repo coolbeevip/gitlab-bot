@@ -7,7 +7,9 @@ This is a Gitlab bot that utilizes webhooks to automate certain tasks:
 * Confirm if a milestone has been specified in Merge requests.
 * Validate if the commit titles adhere to the [Conventional Commits Specification](https://www.conventionalcommits.org/) in Merge requests.
 
-## Quick Start
+## How to use
+
+Starting a Gitlab Bot instance is simple:
 
 ```shell
 docker run --rm \
