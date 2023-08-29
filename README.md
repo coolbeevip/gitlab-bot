@@ -36,7 +36,7 @@ Supports zh and en (default).
 
 **`BOT_HOST` / `BOT_PORT`**
 
-Host and port to run the bot. Default values are 0.0.0.0 and 9998, respectively.
+Host and port to run the bot. The default values are 0.0.0.0 and 9998, respectively.
 
 **`BOT_GIT_EMAIL_DOMAIN`**
 
@@ -48,7 +48,7 @@ BOT_GIT_EMAIL_DOMAIN=gmail.com
 
 **`BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH`**
 
-Maximum character length allowed for Git commit subjects. Default value is 100.
+Maximum character length allowed for Git commit subjects. The default value is 100.
 
 **`BOT_GIT_COMMIT_SUBJECT_REGEX` / `BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN` / `BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED`**
 
@@ -62,7 +62,7 @@ BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN="* feat: Add authentication module\n* f
 
 **`BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED`**
 
-Milestone is required when creating a merge request in GitLab. Default value is false.
+A milestone is required when creating a merge request in GitLab. The default value is false.
 
 **`BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED`**
 
