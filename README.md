@@ -10,7 +10,9 @@ This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/pr
 
 #### Merge requests can only be merged if the source branch is associated with an existing issue.
 
-![](docs/image-review-issue-required.png)
+<p align="center">
+  <img width="1500" src="https://github.com/coolbeevip/gitlab-bot/blob/main/docs/image-review-issue-required.png">
+</p>
 
 #### Confirm if a milestone has been specified in Merge requests.
 
