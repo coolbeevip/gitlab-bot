@@ -30,7 +30,7 @@ msgstr "Merge requests can only be merged if the source branch is associated wit
 
 #: merge_request_hook.py:83
 msgid "bot_review_success"
-msgstr "😊 Review validation success and approves the merge request."
+msgstr "😊 Review validation success and approve the merge request."
 "\n"
 "* ✅ git username pass\n"
 "* ✅ git email pass\n"
