@@ -63,7 +63,7 @@ async def parse_milestone_release_note(event, gl):
 
 async def automatically_mark_and_later_remove_stale_issues(event, gl):
     project_id = event.project_id
-    username = event.data["user"]["username"]
+    # username = event.data["user"]["username"]
     issues = await gl.getitem(
         f"/projects/{project_id}/issues?state=opened&per_page=100"
     )

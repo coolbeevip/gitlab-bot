@@ -63,3 +63,9 @@ msgstr "里程碑 {milestone} 发布说明: \n"
 
 msgid "milestone_not_found"
 msgstr "🙁 里程碑 {milestone} 没有找到"
+
+msgid "merge_requests_description_summary_prefix"
+msgstr "AI 摘要(实验):"
+
+msgid "merge_requests_description_summary_suffix"
+msgstr "AI 模型"

@@ -23,6 +23,7 @@ description = ""
 requires-python = ">=3.8"
 dependencies = [
     "gidgetlab[aiohttp]>=1.0.0",
+    "openai==0.27.10",
     "langchain==0.0.276"
 ]
 

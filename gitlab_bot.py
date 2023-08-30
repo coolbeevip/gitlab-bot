@@ -30,61 +30,72 @@ note_hooks = NoteHooks()
 
 @bot.router.register("Issue Hook", action="open")
 async def issue_opened_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await issue_hooks.issue_opened_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await issue_hooks.issue_opened_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Issue Hook", action="close")
 async def issue_closed_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await issue_hooks.issue_closed_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await issue_hooks.issue_closed_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Issue Hook", action="update")
 async def issue_updated_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await issue_hooks.issue_updated_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await issue_hooks.issue_updated_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="Issue")
 async def note_issue_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await issue_hooks.note_issue_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await issue_hooks.note_issue_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Merge Request Hook", action="open")
 async def merge_request_opened_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await merge_request_hooks.merge_request_opened_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await merge_request_hooks.merge_request_opened_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Merge Request Hook", action="update")
 async def merge_request_updated_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await merge_request_hooks.merge_request_updated_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await merge_request_hooks.merge_request_updated_event(event, gl, args, kwargs)
+
 
 @bot.router.register("Merge Request Hook", action="reopen")
 async def merge_request_updated_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")
 async def note_merge_request_event(event, gl, *args, **kwargs):
-    print_event(event)
-    await merge_request_hooks.note_merge_request_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        await merge_request_hooks.note_merge_request_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="Commit")
 async def note_commit_event(event, gl, *args, **kwargs):
-    print_event(event)
-    note_hooks.note_commit_event(event, gl, args, kwargs)
+    if not ignore_event(event):
+        note_hooks.note_commit_event(event, gl, args, kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="Snippet")
 async def note_snippet_event(event, gl, *args, **kwargs):
+    if not ignore_event(event):
+        note_hooks.note_snippet_event(event, gl, args, kwargs)
+
+
+def ignore_event(event) -> bool:
     print_event(event)
-    note_hooks.note_snippet_event(event, gl, args, kwargs)
+    username = event.data["user"]["username"]
+    if username != bot_gitlab_username:
+        return False
+    else:
+        logging.info("Ignore event: %s triggered by admin", event.data["event_type"])
+        return True
 
 
 if __name__ == "__main__":

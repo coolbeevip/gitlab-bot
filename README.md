@@ -64,7 +64,7 @@ coolbeevip/gitlab-bot
 
 These variables are used to configure the GitLab bot's authentication with the GitLab API. Please provide the following information:
 
-- `BOT_GITLAB_USERNAME`: The username of the bot account on GitLab.
+- `BOT_GITLAB_USERNAME`: The username of the bot account on GitLab.(**Be sure to create a new user and use that user's access token, not the group access token or the project access token.**)
 - `BOT_GITLAB_URL`: The URL of the GitLab instance the bot will be interacting with.
 - `BOT_GITLAB_TOKEN`: The token used to authenticate the bot with the GitLab API.
 
@@ -112,3 +112,6 @@ In GitLab, it is necessary to set a milestone when creating a merge request. By 
 
 Merge requests can only be merged if the source branch is associated with an existing issue. By default, this requirement is disabled.
 
+**`OPENAI_API_BASE` / `OPENAI_API_KEY` / `OPENAI_API_MODEL`**
+
+OPENAI_API_BASE=https://api.plustree.xyz/v1;OPENAI_API_KEY=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;OPENAI_API_MODEL=gpt-3.5-turbo-16k

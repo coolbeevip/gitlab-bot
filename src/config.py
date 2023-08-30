@@ -33,6 +33,10 @@ DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
 
+openai_api_base = os.getenv("OPENAI_API_BASE")
+openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_model = os.getenv("OPENAI_API_MODEL")
+
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")
 bot_port = os.environ.get("BOT_PORT", 9998)
