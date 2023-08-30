@@ -1,1 +1,2 @@
 gidgetlab[aiohttp]>=1.0.0
+langchain==0.0.276
