@@ -1,3 +1,1 @@
 gidgetlab[aiohttp]>=1.0.0
-langchain==0.0.276
-openai==0.27.10
