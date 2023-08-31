@@ -30,6 +30,10 @@ This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/pr
 
 > ![](docs/image-release-note.png)
 
+#### Generates a summary for GitLab merge requests by OpenAI.
+
+> ![](docs/image-ai-summary.png)
+
 ## GitLab Event Support
 
 * Push Events (Not yet)
