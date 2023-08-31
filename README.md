@@ -113,5 +113,3 @@ In GitLab, it is necessary to set a milestone when creating a merge request. By 
 Merge requests can only be merged if the source branch is associated with an existing issue. By default, this requirement is disabled.
 
 **`OPENAI_API_BASE` / `OPENAI_API_KEY` / `OPENAI_API_MODEL`**
-
-OPENAI_API_BASE=https://api.plustree.xyz/v1;OPENAI_API_KEY=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;OPENAI_API_MODEL=gpt-3.5-turbo-16k
