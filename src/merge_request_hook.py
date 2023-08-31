@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
+import logging
 import re
-
-from langchain.schema import HumanMessage, SystemMessage
 
 from src.config import (
     bot_git_commit_subject_example_markdown,
@@ -23,11 +21,10 @@ from src.config import (
     bot_git_commit_subject_regex,
     bot_git_email_domain,
     bot_gitlab_merge_request_issue_required,
-    bot_gitlab_merge_request_milestone_required,
-    openai_api_model,
+    bot_gitlab_merge_request_milestone_required, bot_gitlab_merge_request_summary_enabled,
 )
 from src.i18n import _
-from src.llm import AI
+from src.llm import AI, ai_diffs_summary
 
 
 def check_changes(gl, project_id, iid):
@@ -87,40 +84,27 @@ def check_email(commit_author_name, commit_author_email):
 
 
 async def generate_diff_description_summary(event, gl):
-    if AI is not None:
-        project_id = event.project_id
-        description = event.data["object_attributes"]["description"]
-        iid = event.data["object_attributes"]["iid"]
-        if "AI Summary:" not in description:
-            diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
-            diffs = await gl.getitem(diff_url)
-            diffs_string = json.dumps(diffs, ensure_ascii=False, indent=4)
+    if bot_gitlab_merge_request_summary_enabled and AI is not None:
+        try:
+            project_id = event.project_id
+            description = event.data["object_attributes"]["description"]
+            iid = event.data["object_attributes"]["iid"]
+            if "AI Summary:" not in description:
+                diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
+                diffs = await gl.getitem(diff_url)
+                response_summary = ai_diffs_summary(diffs)
 
-            prefix = _("merge_requests_description_summary_prefix")
-            suffix = _("merge_requests_description_summary_suffix")
-            messages = [
-                SystemMessage(
-                    content="You are a professional git commit review assistant, \
-                generating achieve Chinese summaries based on the following git diff information.\n\n"
-                    + diffs_string
-                ),
-                HumanMessage(
-                    content="You want the first line to start with '{prefix}' and the rest to be summarized in list item.".format(
-                        prefix=prefix
-                    )
-                ),
-            ]
-            summary_description = AI(messages)
-            merge_request_post_note_url = (
-                f"/projects/{project_id}/merge_requests/{iid}/notes"
-            )
-            await gl.post(
-                merge_request_post_note_url,
-                data={
-                    "body": f"{summary_description.content}\n\n{suffix} {openai_api_model}"
-                },
-            )
-            print(summary_description.content)
+                merge_request_post_note_url = (
+                    f"/projects/{project_id}/merge_requests/{iid}/notes"
+                )
+                await gl.post(
+                    merge_request_post_note_url,
+                    data={
+                        "body": response_summary
+                    },
+                )
+        except Exception as e:
+            logging.error(e)
 
 
 async def check_commit(event, gl):

@@ -32,6 +32,7 @@ DEFAULT_BOT_GIT_COMMIT_SUBJECT_MAX_LENGTH_VALUE = 100
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
+DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE = "true"
 
 openai_api_base = os.getenv("OPENAI_API_BASE")
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -52,11 +53,11 @@ bot_git_email_domain = os.getenv("BOT_GIT_EMAIL_DOMAIN", None)
 
 # git commits
 bot_git_commit_subject_regex_enabled = (
-    os.getenv(
-        "BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED",
-        DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED,
-    ).lower()
-    == "true"
+        os.getenv(
+            "BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED",
+            DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED,
+        ).lower()
+        == "true"
 )
 bot_git_commit_subject_regex = os.getenv(
     "BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE
@@ -74,16 +75,25 @@ bot_git_commit_subject_max_length = int(
 
 # gitlab merge request
 bot_gitlab_merge_request_milestone_required = (
-    os.getenv(
-        "BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED",
-        DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE,
-    ).lower()
-    == "true"
+        os.getenv(
+            "BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED",
+            DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE,
+        ).lower()
+        == "true"
 )
 bot_gitlab_merge_request_issue_required = (
-    os.getenv(
-        "BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED",
-        DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE,
-    ).lower()
-    == "true"
+        os.getenv(
+            "BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED",
+            DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE,
+        ).lower()
+        == "true"
 )
+bot_gitlab_merge_request_summary_enabled = (
+        os.getenv(
+            "BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED",
+            DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE,
+        ).lower()
+        == "true"
+)
+# gitlab merge request summary
+bot_gitlab_merge_request_summary_language = os.getenv("BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE", "English")
