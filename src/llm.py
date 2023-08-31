@@ -18,14 +18,19 @@ import logging
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 
-from src.config import openai_api_base, openai_api_key, openai_api_model, bot_gitlab_merge_request_summary_language
+from src.config import (
+    bot_gitlab_merge_request_summary_language,
+    openai_api_base,
+    openai_api_key,
+    openai_api_model,
+)
 from src.i18n import _
 
 AI = None
 if (
-        openai_api_model is not None
-        and openai_api_key is not None
-        and openai_api_base is not None
+    openai_api_model is not None
+    and openai_api_key is not None
+    and openai_api_base is not None
 ):
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
@@ -33,7 +38,7 @@ if (
         model_name=openai_api_model,
         temperature=0,
         request_timeout=300,
-        max_retries=2
+        max_retries=2,
     )
 
 
@@ -45,18 +50,19 @@ def ai_diffs_summary(git_diff) -> str:
         diff_string = json.dumps(diff, ensure_ascii=False, indent=4)
         logging.info(f"diffs_string: {diff_string}")
         messages = [
-            SystemMessage(content=
-                f"You are a professional git commit review assistant, \
-                generating achieve {bot_gitlab_merge_request_summary_language} summaries based on the following git diff information.\n\n{diff_string}"),
-            HumanMessage(content="Please summarize briefly")
+            SystemMessage(
+                content=f"You are a professional git commit review assistant, \
+                generating achieve {bot_gitlab_merge_request_summary_language} summaries based on the following git diff information.\n\n{diff_string}"
+            ),
+            HumanMessage(content="Please summarize briefly"),
         ]
         try:
             response = AI(messages)
             summary_description = response.content
-            summary_descriptions.append(f'* {summary_description}')
+            summary_descriptions.append(f"* {summary_description}")
         except Exception as e:
             logging.error(e)
             # if isinstance(e, OpenAIError):
             #     summary_description = f"{prefix}\n>{e.json_body['message']}"
-    descriptions = '\n'.join(summary_descriptions)
+    descriptions = "\n".join(summary_descriptions)
     return f"**{prefix}**\n\n{descriptions}\n\n**{suffix}** {openai_api_model}"

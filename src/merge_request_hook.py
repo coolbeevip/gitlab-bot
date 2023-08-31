@@ -21,7 +21,8 @@ from src.config import (
     bot_git_commit_subject_regex,
     bot_git_email_domain,
     bot_gitlab_merge_request_issue_required,
-    bot_gitlab_merge_request_milestone_required, bot_gitlab_merge_request_summary_enabled,
+    bot_gitlab_merge_request_milestone_required,
+    bot_gitlab_merge_request_summary_enabled,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -99,9 +100,7 @@ async def generate_diff_description_summary(event, gl):
                 )
                 await gl.post(
                     merge_request_post_note_url,
-                    data={
-                        "body": response_summary
-                    },
+                    data={"body": response_summary},
                 )
         except Exception as e:
             logging.error(e)
