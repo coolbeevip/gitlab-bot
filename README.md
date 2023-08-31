@@ -113,3 +113,10 @@ In GitLab, it is necessary to set a milestone when creating a merge request. By 
 Merge requests can only be merged if the source branch is associated with an existing issue. By default, this requirement is disabled.
 
 **`OPENAI_API_BASE` / `OPENAI_API_KEY` / `OPENAI_API_MODEL`**
+
+These parameters are used to connect the OPENAI model.
+
+**`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE`**
+
+The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` parameter controls whether the system generates a summary for GitLab merge requests. By default, it is set to `true`.
+The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` parameter specifies the language in which the generated merge request summaries will be written. By default, it is set to `English`. However, you can change it to any preferred language code if needed.
