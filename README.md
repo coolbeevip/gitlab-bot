@@ -106,7 +106,7 @@ BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN="* feat: Add authentication module\n* f
 
 These variables are used to enforce a consistent commit message format for the Git repository. The `BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED` is set to "true" to enable the validation of commit subjects using the regular expression pattern specified in `BOT_GIT_COMMIT_SUBJECT_REGEX`.
 
-The `BOT_GIT_COMMIT_SUBJECT_REGEX` contains a regular expression pattern that matches commit subjects following the Conventional Commits Specification. This pattern ensures that commit subjects start with a specific type (e.g., "fix", "feat", "docs") followed by a colon and a space, and then any additional description.
+The `BOT_GIT_COMMIT_SUBJECT_REGEX` contains a regular expression pattern that matches commit subjects following the Conventional Commits Specification. This pattern ensures that commit subjects start with a specific type (e.g., "fix", "feat", "docs") followed by a colon and a space, and then any additional description. **Merge commits are excluded from this validation.**
 
 The `BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN` provides a list of example commit subjects following the specified format. These examples can be used as a guideline when writing commit messages.
 
