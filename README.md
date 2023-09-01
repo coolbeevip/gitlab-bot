@@ -53,6 +53,8 @@ This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/pr
 
 Starting a Gitlab Bot instance is simple:
 
+> In Docker version 19, utilizing the "--security-opt seccomp:unconfined" option when running a container with a preconfigured seccomp profile can disable the seccomp filter and allow processes to execute any system call.
+
 ```shell
 docker run --rm \
 -e BOT_GITLAB_USERNAME="Your Gitlab Username" \
