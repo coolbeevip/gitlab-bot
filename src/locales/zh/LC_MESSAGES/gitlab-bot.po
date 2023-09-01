@@ -69,3 +69,11 @@ msgstr "AI 摘要(实验):"
 
 msgid "merge_requests_description_summary_suffix"
 msgstr "AI 模型"
+
+msgid "bot_issue_help"
+msgstr "Bot 帮助: \n"
+"* **/bot-release-note**: 生成指定里程碑名称的发布说明， 例如: /bot-release-note 1.0.0\n"
+"* **/bot-issue-outdated**: 添加 ~\"Outdated\" 标签到最近 17 天不活跃的 Issues，例如: /bot-issue-outdated"
+
+msgid "marked_issue_outdated_summary"
+msgstr "发现 {total} 个过时的问题（闲置超过 {days_ago} 天），标记为 ~\"{label_name}\""

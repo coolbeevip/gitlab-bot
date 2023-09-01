@@ -70,3 +70,11 @@ msgstr "AI Summery(experiment):"
 
 msgid "merge_requests_description_summary_suffix"
 msgstr "Powered by"
+
+msgid "bot_issue_help"
+msgstr "Bot Help: \n"
+"* **/bot-release-note**: Generate release notes by milestones, for example: /bot-release-note 1.0.0\n"
+"* **/bot-issue-outdated**: Add a ~\"Outdated\" label to issues that are inactive for 14 days, for example: /bot-issue-outdated"
+
+msgid "marked_issue_outdated_summary"
+msgstr "Discovered {total} outdated issues (idle for over {days_ago} days) marked as ~\"{label_name}\""
