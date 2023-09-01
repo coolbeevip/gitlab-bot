@@ -23,6 +23,7 @@ from src.config import (
     bot_gitlab_merge_request_issue_required,
     bot_gitlab_merge_request_milestone_required,
     bot_gitlab_merge_request_summary_enabled,
+    bot_gitlab_username,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -159,11 +160,8 @@ async def check_commit(event, gl):
             check_email(commit_author_name, commit_author_email)
             check_commit_message(commit_title)
         message = _("bot_review_success")
-        merge_request_post_approval_url = (
-            f"/projects/{project_id}/merge_requests/{iid}/approve"
-        )
+        approval_merge_request(project_id, iid, gl)
         await gl.post(merge_request_post_note_url, data={"body": message})
-        await gl.post(merge_request_post_approval_url, data=None)
     except Exception as e:
         message = _("bot_review_fails").format(error_message=str(e))
         await gl.post(merge_request_post_note_url, data={"body": message})
@@ -174,6 +172,19 @@ async def check_commit(event, gl):
         #     f"/projects/{project_id}/merge_requests/{iid}/unapprove"
         # )
         # await gl.post(merge_request_post_unapproval_url, data=None)
+
+
+async def approval_merge_request(project_id, iid, gl):
+    query_approvals_url = f"/projects/{project_id}/merge_requests/{iid}/approvals"
+    approvals = gl.getitem(query_approvals_url)
+    bot_approved = False
+    if approvals.approved:
+        for approval in approvals.approved_by:
+            if approval.user.username == bot_gitlab_username:
+                bot_approved = True
+                return
+    if not bot_approved:
+        await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
 
 
 def is_opened_merge_request(event):
