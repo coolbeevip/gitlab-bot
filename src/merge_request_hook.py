@@ -91,8 +91,18 @@ async def generate_diff_description_summary(event, gl):
             description = event.data["object_attributes"]["description"]
             iid = event.data["object_attributes"]["iid"]
             if "AI Summary:" not in description:
-                diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
-                diffs = await gl.getitem(diff_url)
+                try:
+                    # Support 15.7+
+                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
+                    diffs = await gl.getitem(diff_url)
+                except Exception as e:
+                    logging.warning(
+                        "Calling API /diffs error, trying to call /changes", e
+                    )
+                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/changes"
+                    changes = await gl.getitem(diff_url)
+                    diffs = changes["changes"]
+
                 response_summary = ai_diffs_summary(diffs)
 
                 merge_request_post_note_url = (

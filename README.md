@@ -1,6 +1,6 @@
 # Gitlab Bot 
 
-This is a Gitlab bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
+This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
 
 #### Verify if the submitters email domain during Merge requests.
 
