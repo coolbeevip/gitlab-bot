@@ -43,7 +43,8 @@ def check_commit_message(commit_msg):
                 commit_subject_max_length=bot_git_commit_subject_max_length
             )
         )
-
+    if commit_msg.startswith("Merge branch "):
+        return
     regex = re.compile(bot_git_commit_subject_regex)
     if re.search(regex, commit_msg) is None:
         raise Exception(
