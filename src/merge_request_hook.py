@@ -176,14 +176,21 @@ async def check_commit(event, gl):
         # await gl.post(merge_request_post_unapproval_url, data=None)
 
 
+def is_opened_merge_request(event):
+    if event.data["event_type"] == "merge_request":
+        merge_request_state = event.data["object_attributes"]["state"]
+    else:
+        merge_request_state = event.data["merge_request"]["state"]
+    return merge_request_state == "opened"
+
+
 class MergeRequestHooks:
     async def merge_request_opened_event(self, event, gl, *args, **kwargs):
         await generate_diff_description_summary(event, gl)
         await check_commit(event, gl)
 
     async def merge_request_updated_event(self, event, gl, *args, **kwargs):
-        merge_request_state = event.data["merge_request"]["state"]
-        if merge_request_state == "opened":
+        if is_opened_merge_request(event):
             await generate_diff_description_summary(event, gl)
             await check_commit(event, gl)
 
@@ -192,10 +199,6 @@ class MergeRequestHooks:
         await check_commit(event, gl)
 
     async def note_merge_request_event(self, event, gl, *args, **kwargs):
-        note = event.data["object_attributes"]["note"]
-        # username = event.data["user"]["username"]
-        # merge_request_title = event.data["merge_request"]["title"]
-        merge_request_state = event.data["merge_request"]["state"]  # opened
-        if merge_request_state == "opened":
-            if "/bot-review" in note:
+        if is_opened_merge_request(event):
+            if "/bot-review" in event.data["object_attributes"]["note"]:
                 await check_commit(event, gl)
