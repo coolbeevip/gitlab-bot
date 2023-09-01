@@ -172,8 +172,10 @@ class MergeRequestHooks:
         await check_commit(event, gl)
 
     async def merge_request_updated_event(self, event, gl, *args, **kwargs):
-        await generate_diff_description_summary(event, gl)
-        await check_commit(event, gl)
+        merge_request_state = event.data["merge_request"]["state"]
+        if merge_request_state == "opened":
+            await generate_diff_description_summary(event, gl)
+            await check_commit(event, gl)
 
     async def merge_request_reopen_event(self, event, gl, *args, **kwargs):
         await generate_diff_description_summary(event, gl)
