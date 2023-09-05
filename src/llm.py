@@ -28,9 +28,9 @@ from src.i18n import _
 
 AI = None
 if (
-    openai_api_model is not None
-    and openai_api_key is not None
-    and openai_api_base is not None
+        openai_api_model is not None
+        and openai_api_key is not None
+        and openai_api_base is not None
 ):
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
@@ -40,6 +40,17 @@ if (
         request_timeout=300,
         max_retries=2,
     )
+
+DIFFS_SUMMARY_PROMPTS_TEMPLATE = """
+You are a highly skilled AI trained in language comprehension and summarization. 
+I want you to read the text delimited by triple quotes and summarize it into a concise abstract paragraph. 
+Designed to understand the main points of git diffs, providing a coherent and readable summary that can help people understand the main points of the discussion without having to read the entire text. Please avoid unnecessary details or tangential points.
+Only give me the output and nothing else. Do not wrap responses in quotes. Respond in the {language} language.
+
+\"\"\"
+{diff_string}
+\"\"\"
+"""
 
 
 def ai_diffs_summary(git_diff) -> str:
@@ -51,12 +62,9 @@ def ai_diffs_summary(git_diff) -> str:
         logging.info(f"diffs_string: {diff_string}")
         messages = [
             SystemMessage(
-                content=f"You are a professional git commit review assistant, \
-                generating achieve {bot_gitlab_merge_request_summary_language} \
-                summaries based on the following git diff information. \
-                disregard modifications to Markdown files with a .md extension. \n\n{diff_string}"
-            ),
-            HumanMessage(content="Please summarize briefly"),
+                content=DIFFS_SUMMARY_PROMPTS_TEMPLATE.format(language=bot_gitlab_merge_request_summary_language,
+                                                              diff_string=diff_string)),
+            HumanMessage(content="Please summarize as clearly and concisely as possible."),
         ]
         try:
             response = AI(messages)

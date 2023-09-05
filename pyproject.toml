@@ -18,7 +18,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "gitlab-bot"
-version = "1.1.0"
+version = "1.2.0"
 description = ""
 requires-python = ">=3.8"
 dependencies = [
