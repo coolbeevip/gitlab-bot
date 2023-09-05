@@ -52,7 +52,9 @@ def ai_diffs_summary(git_diff) -> str:
         messages = [
             SystemMessage(
                 content=f"You are a professional git commit review assistant, \
-                generating achieve {bot_gitlab_merge_request_summary_language} summaries based on the following git diff information.\n\n{diff_string}"
+                generating achieve {bot_gitlab_merge_request_summary_language} \
+                summaries based on the following git diff information. \
+                disregard modifications to Markdown files with a .md extension. \n\n{diff_string}"
             ),
             HumanMessage(content="Please summarize briefly"),
         ]
