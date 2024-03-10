@@ -28,9 +28,9 @@ from src.i18n import _
 
 AI = None
 if (
-        openai_api_model is not None
-        and openai_api_key is not None
-        and openai_api_base is not None
+    openai_api_model is not None
+    and openai_api_key is not None
+    and openai_api_base is not None
 ):
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
@@ -62,9 +62,14 @@ def ai_diffs_summary(git_diff) -> str:
         logging.info(f"diffs_string: {diff_string}")
         messages = [
             SystemMessage(
-                content=DIFFS_SUMMARY_PROMPTS_TEMPLATE.format(language=bot_gitlab_merge_request_summary_language,
-                                                              diff_string=diff_string)),
-            HumanMessage(content="Please summarize as clearly and concisely as possible."),
+                content=DIFFS_SUMMARY_PROMPTS_TEMPLATE.format(
+                    language=bot_gitlab_merge_request_summary_language,
+                    diff_string=diff_string,
+                )
+            ),
+            HumanMessage(
+                content="Please summarize as clearly and concisely as possible."
+            ),
         ]
         try:
             response = AI(messages)
