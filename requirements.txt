@@ -1,3 +1,4 @@
-gidgetlab[aiohttp]>=1.0.0
-langchain==0.0.276
-openai==0.27.10
+gidgetlab[aiohttp]>=1.1.0
+langchain==0.1.11
+langchain-openai==0.0.8
+python-dotenv==1.0.1
