@@ -1,0 +1,10 @@
+{
+    "diff": "@@ -46,8 +46,8 @@\n     <distribution.password/>\n \n     <!-- spring family -->\n-    <spring-boot.version>2.7.16</spring-boot.version>\n-    <spring-cloud.version>2021.0.8</spring-cloud.version>\n+    <spring-boot.version>2.7.18</spring-boot.version>\n+    <spring-cloud.version>2021.0.9</spring-cloud.version>\n     <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>\n     <spring.checkstyle.version>0.0.22</spring.checkstyle.version>\n     <spring-boot-admin.version>2.3.1</spring-boot-admin.version>\n",
+    "new_path": "nc-dependencies/pom.xml",
+    "old_path": "nc-dependencies/pom.xml",
+    "a_mode": "100644",
+    "b_mode": "100644",
+    "new_file": false,
+    "renamed_file": false,
+    "deleted_file": false
+}

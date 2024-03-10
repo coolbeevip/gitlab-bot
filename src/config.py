@@ -14,6 +14,9 @@
 
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()  # isort:skip
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = (
     "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
 )
@@ -44,9 +47,9 @@ bot_port = os.environ.get("BOT_PORT", "9998")
 bot_host = os.environ.get("BOT_HOST", "0.0.0.0")
 
 # gitlab connector
-bot_gitlab_username = os.environ["BOT_GITLAB_USERNAME"]
-bot_gitlab_url = os.environ["BOT_GITLAB_URL"]
-bot_gitlab_token = os.environ["BOT_GITLAB_TOKEN"]
+bot_gitlab_username = os.getenv("BOT_GITLAB_USERNAME", None)
+bot_gitlab_url = os.getenv("BOT_GITLAB_URL", None)
+bot_gitlab_token = os.getenv("BOT_GITLAB_TOKEN", None)
 
 # git config username & email
 bot_git_email_domain = os.getenv("BOT_GIT_EMAIL_DOMAIN", None)
