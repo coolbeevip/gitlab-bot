@@ -38,7 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: coolbeevip/gitlab-bot:1.2.0,coolbeevip/gitlab-bot:latest
+          tags: coolbeevip/gitlab-bot:1.2.1,coolbeevip/gitlab-bot:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image Digest
