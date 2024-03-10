@@ -18,13 +18,14 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "gitlab-bot"
-version = "1.2.0"
+version = "1.2.1"
 description = ""
 requires-python = ">=3.8"
 dependencies = [
-    "gidgetlab[aiohttp]>=1.0.0",
-    "openai==0.27.10",
-    "langchain==0.0.276"
+    "gidgetlab[aiohttp]>=1.1.0",
+    "langchain-openai",
+    "langchain==0.1.11",
+    "python-dotenv==1.0.1",
 ]
 
 [project.optional-dependencies]

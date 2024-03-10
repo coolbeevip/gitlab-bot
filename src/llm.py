@@ -15,8 +15,8 @@
 import json
 import logging
 
-from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
 
 from src.config import (
     bot_gitlab_merge_request_summary_language,

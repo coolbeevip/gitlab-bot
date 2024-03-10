@@ -14,7 +14,10 @@
 
 import logging
 
+from dotenv import load_dotenv
 from gidgetlab.aiohttp import GitLabBot
+
+load_dotenv()  # isort:skip
 
 from src.config import bot_gitlab_username, bot_gitlab_url, bot_gitlab_token, bot_port, bot_host
 from src.issue_hook import IssueHooks
@@ -101,4 +104,4 @@ def ignore_event(event) -> bool:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    bot.run(host=bot_host, port=bot_port)
+    bot.run(host=bot_host, port=int(bot_port))

@@ -40,7 +40,7 @@ openai_api_model = os.getenv("OPENAI_API_MODEL")
 
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")
-bot_port = os.environ.get("BOT_PORT", 9998)
+bot_port = os.environ.get("BOT_PORT", "9998")
 bot_host = os.environ.get("BOT_HOST", "0.0.0.0")
 
 # gitlab connector

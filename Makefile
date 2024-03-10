@@ -2,7 +2,7 @@ init:
 	pip install . '.[lint]' '.[test]' '.[package]' --default-timeout=600 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 lint:
-	@pflake8 ./bot
+	@pflake8 ./src
 
 fmt:
 	@black ./src
