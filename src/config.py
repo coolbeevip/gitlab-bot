@@ -37,9 +37,17 @@ DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE = "true"
 
+# openai api
 openai_api_base = os.getenv("OPENAI_API_BASE")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_api_model = os.getenv("OPENAI_API_MODEL")
+
+# google gemini api
+google_api_key = os.getenv("GOOGLE_API_KEY")
+google_api_model = os.getenv("GOOGLE_API_MODEL")
+
+# ai backend (openai or gemini)
+AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")
 
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")
