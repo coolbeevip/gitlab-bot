@@ -25,6 +25,7 @@ from src.config import (
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
     bot_gitlab_merge_request_email_username_not_match_enabled
+    bot_git_commit_message_check_enabled
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -38,6 +39,8 @@ def check_changes(gl, project_id, iid):
 
 
 def check_commit_message(commit_msg):
+    if bot_git_commit_message_check_enabled == False:
+        return
     if len(commit_msg) > bot_git_commit_subject_max_length:
         raise Exception(
             _("commit_subject_max_length").format(
