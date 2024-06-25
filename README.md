@@ -122,6 +122,14 @@ Merge requests can only be merged if the source branch is associated with an exi
 
 These parameters are used to connect the OPENAI model.
 
+**`GOOGLE_API_KEY` / `GOOGLE_API_MODEL`**
+
+These parameters are used to connect Google models.
+
+**`AI_PROVIDER`**
+
+This parameter is used to select the backend for the AI model. By default, it is set to `openai`. You can change it to `google` to use Google models.
+
 **`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE`**
 
 The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` parameter controls whether the system generates a summary for GitLab merge requests. By default, it is set to `true`.

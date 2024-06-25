@@ -15,18 +15,21 @@
 import json
 import logging
 
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-from src.config import bot_language, openai_api_base, openai_api_key, openai_api_model
+from src.config import bot_language, openai_api_base, openai_api_key, openai_api_model, google_api_key, google_api_model, AI_PROVIDER
 from src.i18n import _
 from src.prompts.prompts import get_prompt_text
 
 AI = None
+
 if (
     openai_api_model is not None
     and openai_api_key is not None
     and openai_api_base is not None
+    and AI_PROVIDER == "openai"
 ):
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
@@ -36,6 +39,13 @@ if (
         request_timeout=300,
         max_retries=2,
     )
+
+if (
+    google_api_key is not None
+    and google_api_model is not None
+    and AI_PROVIDER == "google"
+):
+    AI = ChatGoogleGenerativeAI(model=google_api_model)
 
 
 def ai_diffs_summary(git_diff) -> str:
