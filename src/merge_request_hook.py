@@ -24,6 +24,7 @@ from src.config import (
     bot_gitlab_merge_request_milestone_required,
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
+    bot_gitlab_merge_request_email_username_not_match_enabled
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -77,7 +78,7 @@ def check_email(commit_author_name, commit_author_email):
                     gitlab_email_domain=bot_git_email_domain,
                 )
             )
-        if username != commit_author_name:
+        if bot_gitlab_merge_request_email_username_not_match_enabled and username != commit_author_name:
             raise Exception(
                 _("email_username_not_match").format(
                     commit_author_name=commit_author_name,

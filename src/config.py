@@ -36,6 +36,7 @@ DEFAULT_BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE = "true"
+DEFAULT_BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED = "false"
 
 # openai api
 openai_api_base = os.getenv("OPENAI_API_BASE")
@@ -109,4 +110,13 @@ bot_gitlab_merge_request_summary_enabled = (
 # gitlab merge request summary
 bot_gitlab_merge_request_summary_language = os.getenv(
     "BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE", "English"
+)
+
+# gitlab merge request email username not match check
+bot_gitlab_merge_request_email_username_not_match_enabled = (
+    os.getenv(
+        "BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED",
+        DEFAULT_BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED,
+    ).lower()
+    == "true"
 )
