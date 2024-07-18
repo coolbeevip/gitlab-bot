@@ -134,3 +134,7 @@ This parameter is used to select the backend for the AI model. By default, it is
 
 The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` parameter controls whether the system generates a summary for GitLab merge requests. By default, it is set to `true`.
 The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` parameter specifies the language in which the generated merge request summaries will be written. By default, it is set to `English`. However, you can change it to any preferred language code if needed.
+
+**`BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED`**
+
+Merge requests can only be merged if the email username (before the "@") matches the commit author's name. By default, this requirement is disabled.
