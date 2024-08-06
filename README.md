@@ -138,3 +138,7 @@ The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` parameter specifies the language
 **`BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED`**
 
 Merge requests can only be merged if the email username (before the "@") matches the commit author's name. By default, this requirement is disabled.
+
+**`BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED`**
+
+Merge requests can only be merged if the commit message follows a specific format. When it's set to `true`, the bot will validate commit messages based on a specified regex defined by the `BOT_GIT_COMMIT_SUBJECT_REGEX` environment variable.

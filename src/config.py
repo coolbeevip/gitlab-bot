@@ -37,6 +37,7 @@ DEFAULT_BOT_GITLAB_MERGE_REQUEST_ISSUE_REQUIRED_VALUE = "false"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED = "true"
+DEFAULT_BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED = "true"
 
 # openai api
 openai_api_base = os.getenv("OPENAI_API_BASE")
@@ -64,6 +65,14 @@ bot_gitlab_token = os.getenv("BOT_GITLAB_TOKEN", None)
 bot_git_email_domain = os.getenv("BOT_GIT_EMAIL_DOMAIN", None)
 
 # git commits
+bot_git_commit_message_check_enabled = (
+    os.getenv(
+        "BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED",
+        DEFAULT_BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED,
+    ).lower()
+    == "true"
+)
+
 bot_git_commit_subject_regex_enabled = (
     os.getenv(
         "BOT_GIT_COMMIT_SUBJECT_REGEX_ENABLED",
