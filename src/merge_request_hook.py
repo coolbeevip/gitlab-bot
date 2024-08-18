@@ -25,7 +25,8 @@ from src.config import (
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
     bot_gitlab_merge_request_email_username_not_match_enabled,
-    bot_git_commit_message_check_enabled
+    bot_git_commit_message_check_enabled,
+    bot_gitlab_merge_request_approval_enabled
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -164,9 +165,10 @@ async def check_commit(event, gl):
             commit_author_email = commit["author_email"]
             check_email(commit_author_name, commit_author_email)
             check_commit_message(commit_title)
-        message = _("bot_review_success")
-        approval_merge_request(project_id, iid, gl)
-        await gl.post(merge_request_post_note_url, data={"body": message})
+        if bot_gitlab_merge_request_approval_enabled:
+            message = _("bot_review_success")
+            approval_merge_request(project_id, iid, gl)
+            await gl.post(merge_request_post_note_url, data={"body": message})
     except Exception as e:
         message = _("bot_review_fails").format(error_message=str(e))
         await gl.post(merge_request_post_note_url, data={"body": message})
