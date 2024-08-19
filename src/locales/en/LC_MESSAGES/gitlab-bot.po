@@ -31,10 +31,6 @@ msgstr "Merge requests can only be merged if the source branch is associated wit
 #: merge_request_hook.py:83
 msgid "bot_review_success"
 msgstr "😊 Review validation success and approve the merge request."
-"\n"
-"* ✅ git username pass\n"
-"* ✅ git email pass\n"
-"* ✅ git commit message pass"
 
 msgid "bot_review_fails"
 msgstr "🙁 Review validation fails and approval has been revoked."
@@ -66,7 +62,7 @@ msgid "milestone_not_found"
 msgstr "Milestone {milestone} not found"
 
 msgid "merge_requests_description_summary_prefix"
-msgstr "AI Summery(experiment):"
+msgstr "AI Summary(experiment):"
 
 msgid "merge_requests_description_summary_suffix"
 msgstr "Powered by"

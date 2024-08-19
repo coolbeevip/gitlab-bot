@@ -142,3 +142,7 @@ Merge requests can only be merged if the email username (before the "@") matches
 **`BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED`**
 
 Merge requests can only be merged if the commit message follows a specific format. When it's set to `true`, the bot will validate commit messages based on a specified regex defined by the `BOT_GIT_COMMIT_SUBJECT_REGEX` environment variable.
+
+**`BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED`**
+
+This parameter controls whether the bot automatically approves merge requests that pass all checks. By default, it is set to `true`, allowing the bot to automatically approve merge requests. Setting it to `false` disables automatic approval, requiring manual approval for all merge requests.

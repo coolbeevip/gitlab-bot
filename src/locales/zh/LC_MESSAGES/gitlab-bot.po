@@ -31,10 +31,6 @@ msgstr "🙁 只有当源分支与现有问题相关联时，才能合并合并�
 #: merge_request_hook.py:83
 msgid "bot_review_success"
 msgstr "😊合并请求验证成功，批准合并请求。"
-"\n"
-"* ✅ git username pass\n"
-"* ✅ git email pass\n"
-"* ✅ git commit message pass"
 
 msgid "bot_review_fails"
 msgstr "🙁合并请求验证失败，并撤回批准。"
