@@ -1,5 +1,6 @@
 gidgetlab[aiohttp]>=1.1.0
-langchain_core==0.2.0
+langchain_core==0.2.33
 langchain-openai==0.1.7
 langchain-google-genai==1.0.4 # This package contains the LangChain integrations for the Gemini API.
+langchain-google-vertexai==1.0.10 # This package contains the Langchan integration for Google Cloud VertexAI models
 python-dotenv==1.0.1

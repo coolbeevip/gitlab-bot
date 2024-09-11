@@ -49,6 +49,9 @@ openai_api_model = os.getenv("OPENAI_API_MODEL")
 google_api_key = os.getenv("GOOGLE_API_KEY")
 google_api_model = os.getenv("GOOGLE_API_MODEL")
 
+# google vertex ai
+google_vertexai_model = os.getenv("GOOGLE_VERTEXAI_MODEL")
+
 # ai backend (openai or gemini)
 AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")
 

@@ -18,8 +18,9 @@ import logging
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_vertexai import ChatVertexAI
 
-from src.config import bot_language, openai_api_base, openai_api_key, openai_api_model, google_api_key, google_api_model, AI_PROVIDER
+from src.config import bot_language, openai_api_base, openai_api_key, openai_api_model, google_api_key, google_api_model, google_vertexai_model, AI_PROVIDER
 from src.i18n import _
 from src.prompts.prompts import get_prompt_text
 
@@ -46,6 +47,17 @@ if (
     and AI_PROVIDER == "google"
 ):
     AI = ChatGoogleGenerativeAI(model=google_api_model)
+    
+if (
+    google_vertexai_model is not None
+    and AI_PROVIDER == "google-vertexai"
+):
+    AI = ChatVertexAI(
+        model=google_vertexai_model,
+        temperature=0,
+        max_tokens=None,
+        max_retries=2
+    )
 
 
 def ai_diffs_summary(git_diff) -> str:
