@@ -146,3 +146,9 @@ Merge requests can only be merged if the commit message follows a specific forma
 **`BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED`**
 
 This parameter controls whether the bot automatically approves merge requests that pass all checks. By default, it is set to `true`, allowing the bot to automatically approve merge requests. Setting it to `false` disables automatic approval, requiring manual approval for all merge requests.
+
+**`BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED`**
+
+This parameter controls the feature to add a new status label "AI Review" to merge requests, facilitating better tracking of AI-assisted code reviews. When enabled, the label is automatically added when AI summary generation is enabled and completed. The label is removed when a Merge Request is updated but the AI feature is disabled.
+
+By default, this feature is enabled. To disable it, set the `BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED` environment variable to "false". This feature is particularly useful for projects that heavily rely on AI-assisted code reviews to ensure that all code changes are thoroughly examined before merging.

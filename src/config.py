@@ -39,6 +39,7 @@ DEFAULT_BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED_VALUE = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED = "true"
 DEFAULT_BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED = "true"
 DEFAULT_BOT_GIT_COMMIT_MESSAGE_CHECK_ENABLED = "true"
+DEFAULT_BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED = "true"
 
 # openai api
 openai_api_base = os.getenv("OPENAI_API_BASE")
@@ -136,6 +137,15 @@ bot_gitlab_merge_request_approval_enabled = (
     os.getenv(
         "BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED",
         DEFAULT_BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED,
+    ).lower()
+    == "true"
+)
+
+# gitlab merge request ai review label
+bot_gitlab_merge_request_aireview_label_enabled = (
+    os.getenv(
+        "BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED",
+        DEFAULT_BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED,
     ).lower()
     == "true"
 )

@@ -26,11 +26,22 @@ from src.config import (
     bot_gitlab_username,
     bot_gitlab_merge_request_email_username_not_match_enabled,
     bot_git_commit_message_check_enabled,
-    bot_gitlab_merge_request_approval_enabled
+    bot_gitlab_merge_request_approval_enabled,
+    bot_gitlab_merge_request_aireview_label_enabled,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
 
+from enum import Enum
+
+class StatusLabel(Enum):
+    AIReview = "MRStatus::AIReview"
+
+class StatusLabelAction(Enum):
+    Add = "add"
+    Remove = "remove"
+
+all_status_labels = list(StatusLabel)
 
 def check_changes(gl, project_id, iid):
     # url = f"/projects/{project_id}/merge_requests/{iid}/changes"
@@ -92,12 +103,14 @@ def check_email(commit_author_name, commit_author_email):
 
 
 async def generate_diff_description_summary(event, gl):
+    project_id = event.project_id
+    description = event.data["object_attributes"]["description"]
+    labels = event.data["object_attributes"]["labels"]
+    iid = event.data["object_attributes"]["iid"]
     if bot_gitlab_merge_request_summary_enabled and AI is not None:
         try:
-            project_id = event.project_id
-            description = event.data["object_attributes"]["description"]
-            iid = event.data["object_attributes"]["iid"]
-            if "AI Summary:" not in description:
+            if not has_ai_review(description, labels):
+                logging.debug("AI Summary not found, generating...")
                 try:
                     # Support 15.7+
                     diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
@@ -119,8 +132,21 @@ async def generate_diff_description_summary(event, gl):
                     merge_request_post_note_url,
                     data={"body": response_summary},
                 )
+                logging.debug("AI Summary generated.")
+            else:
+                logging.debug("AI Summary found, skipping...")
+            
+            # Add AI Review status label if not exists
+            if bot_gitlab_merge_request_aireview_label_enabled and not has_ai_review_label(labels):
+                await update_status_label(gl, project_id, iid, StatusLabel.AIReview.value, labels, StatusLabelAction.Add)
+        
         except Exception as e:
             logging.error(e)
+            raise e
+    else:
+        logging.debug("AI Summary generation feature is disabled or AI feature is not available.")
+        # Remove AI Review status label
+        await update_status_label(gl, project_id, iid, StatusLabel.AIReview.value, labels, StatusLabelAction.Remove)
 
 
 async def check_commit(event, gl):
@@ -201,6 +227,59 @@ def is_opened_merge_request(event):
         merge_request_state = event.data["merge_request"]["state"]
     return merge_request_state == "opened"
 
+async def update_status_label(gl, pid, mr_iid, label, current_labels, action=StatusLabelAction.Add):
+    if not is_status_label(label):
+        logging.error(f"Label '{label}' is not a valid status label")
+        return False, None
+    to_update = [mr_label["title"] for mr_label in current_labels]
+    if action == StatusLabelAction.Add:
+        if label not in to_update:
+            to_update.append(label)
+            logging.debug(f"Adding status label '{label}' to MR {mr_iid}")
+        else:
+            logging.debug(f"Status label '{label}' already exists in MR {mr_iid}")
+            return False, None
+    elif action == StatusLabelAction.Remove:
+        if label in to_update:
+            to_update.remove(label)
+            logging.debug(f"Removing status label '{label}' from MR {mr_iid}")
+        else:
+            logging.debug(f"Status label '{label}' does not exist in MR {mr_iid}")
+            return False, None
+    else:
+        logging.error(f"Invalid action '{action}' for updating status label")
+        return False, None
+    await gl.put(
+        f"/projects/{pid}/merge_requests/{mr_iid}?labels={','.join(to_update)}",
+        data=None,
+    )
+    logging.debug(f"MR {mr_iid} labels updated successfully")
+    return True, None
+
+def is_status_label(label):
+    for status in all_status_labels:
+        logging.debug(f"Checking label '{label}' against {status}")
+        if label == status.value:
+            return True
+    return False
+
+def has_ai_review(description, labels):
+    if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(labels):
+        return True
+    if has_ai_summary_description(description):
+        return True
+    return False
+
+def has_ai_summary_description(description):
+    if "AI Summary:" in description:
+        return True
+    return False
+
+def has_ai_review_label(labels):
+    for label in labels:
+        if label["title"] == StatusLabel.AIReview.value:
+            return True
+    return False
 
 class MergeRequestHooks:
     async def merge_request_opened_event(self, event, gl, *args, **kwargs):
