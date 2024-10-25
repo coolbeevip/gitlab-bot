@@ -1,4 +1,4 @@
-gidgetlab[aiohttp]>=1.1.0
+gidgetlab[aiohttp]>=2.0.1
 langchain_core==0.2.0
 langchain-openai==0.1.7
 langchain-google-genai==1.0.4 # This package contains the LangChain integrations for the Gemini API.
