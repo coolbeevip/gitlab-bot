@@ -107,6 +107,11 @@ async def generate_diff_description_summary(event, gl):
     description = event.data["object_attributes"]["description"]
     labels = event.data["object_attributes"]["labels"]
     iid = event.data["object_attributes"]["iid"]
+    change_event = event.data["changes"]
+    if not change_event:
+        logging.debug(f"MR has no code changes, AI Summary generation skipped...")
+        return None
+            
     if bot_gitlab_merge_request_summary_enabled and AI is not None:
         try:
             if not has_ai_review(description, labels):
