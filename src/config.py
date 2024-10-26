@@ -46,12 +46,24 @@ openai_api_base = os.getenv("OPENAI_API_BASE")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 openai_api_model = os.getenv("OPENAI_API_MODEL")
 
+# azure openai
+azure_openai_api_key = os.getenv("AZURE_OPENAI_API_KEY")
+azure_openai_api_version = os.getenv("AZURE_OPENAI_API_VERSION")
+azure_openai_model = os.getenv("AZURE_OPENAI_MODEL")
+azure_openai_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+
 # google gemini api
 google_api_key = os.getenv("GOOGLE_API_KEY")
 google_api_model = os.getenv("GOOGLE_API_MODEL")
 
 # ai backend (openai or gemini)
 AI_PROVIDER = os.getenv("AI_PROVIDER", "openai")
+
+model_name = {
+    "openai": openai_api_model,
+    "azure-openai": azure_openai_model,
+    "google": google_api_model,
+}.get(AI_PROVIDER, None)
 
 # i18n
 bot_language = os.environ.get("BOT_LANGUAGE", "en")

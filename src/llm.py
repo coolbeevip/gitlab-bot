@@ -16,17 +16,28 @@ import json
 import logging
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, AzureChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from src.config import bot_language, openai_api_base, openai_api_key, openai_api_model, google_api_key, google_api_model, AI_PROVIDER
+from src.config import (
+    bot_language,
+    openai_api_base,
+    openai_api_key,
+    google_api_key,
+    azure_openai_api_key,
+    azure_openai_api_version,
+    azure_openai_endpoint,
+    model_name,
+    AI_PROVIDER
+)
+
 from src.i18n import _
 from src.prompts.prompts import get_prompt_text
 
 AI = None
 
 if (
-    openai_api_model is not None
+    model_name is not None
     and openai_api_key is not None
     and openai_api_base is not None
     and AI_PROVIDER == "openai"
@@ -34,7 +45,7 @@ if (
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
         openai_api_key=openai_api_key,
-        model_name=openai_api_model,
+        model_name=model_name,
         temperature=0,
         request_timeout=300,
         max_retries=2,
@@ -42,11 +53,25 @@ if (
 
 if (
     google_api_key is not None
-    and google_api_model is not None
+    and model_name is not None
     and AI_PROVIDER == "google"
 ):
-    AI = ChatGoogleGenerativeAI(model=google_api_model)
+    AI = ChatGoogleGenerativeAI(model=model_name)
 
+if (
+    azure_openai_api_key is not None
+    and model_name is not None
+    and azure_openai_api_version is not None
+    and azure_openai_endpoint is not None
+    and AI_PROVIDER == "azure-openai"
+):
+    AI = AzureChatOpenAI(
+        azure_deployment=model_name,
+        api_version=azure_openai_api_version,
+        temperature=0,
+        timeout=300,
+        max_retries=2
+    )
 
 def ai_diffs_summary(git_diff) -> str:
     summary_descriptions = []
@@ -71,4 +96,4 @@ def ai_diffs_summary(git_diff) -> str:
         # if isinstance(e, OpenAIError):
         #     summary_description = f"{prefix}\n>{e.json_body['message']}"
     descriptions = "\n".join(summary_descriptions)
-    return f"**{prefix}**\n\n{descriptions}\n\n**{suffix}** {openai_api_model}"
+    return f"**{prefix}**\n\n{descriptions}\n\n**{suffix}** {model_name}"

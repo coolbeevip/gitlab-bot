@@ -126,9 +126,13 @@ These parameters are used to connect the OPENAI model.
 
 These parameters are used to connect Google models.
 
+**`AZURE_OPENAI_API_KEY` / `AZURE_OPENAI_API_VERSION` / `AZURE_OPENAI_MODEL` / `AZURE_OPENAI_ENDPOINT`**
+
+These parameters are used to connect Azure OpenAI models.
+
 **`AI_PROVIDER`**
 
-This parameter is used to select the backend for the AI model. By default, it is set to `openai`. You can change it to `google` to use Google models.
+This parameter specifies the AI model backend to use. The default value is `openai`, but you can switch to `google` for Google models or `azure-openai` for Azure OpenAI models.
 
 **`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE`**
 
