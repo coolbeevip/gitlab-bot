@@ -26,6 +26,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+      - name: Clear Cache
+        run: sudo rm -rf ~/.cache/pip
       - name: Install Dependencies
         run: make init
       - name: Run Linter
