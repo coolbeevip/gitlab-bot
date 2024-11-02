@@ -1,5 +1,5 @@
 init:
-	pip install . '.[lint]' '.[test]' '.[package]' --default-timeout=600 -i https://pypi.tuna.tsinghua.edu.cn/simple
+	pip install . '.[lint]' '.[test]' '.[package]'
 
 lint:
 	@pflake8 ./src
