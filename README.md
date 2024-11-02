@@ -1,5 +1,7 @@
 # Gitlab Bot 
 
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/coolbeevip/gitlab-bot/latest)
+
 This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
 
 #### Verify if the submitters email domain during Merge requests.
