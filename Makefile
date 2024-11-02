@@ -2,12 +2,12 @@ init:
 	pip install . '.[lint]' '.[test]' '.[package]'
 
 lint:
-	@pflake8 ./src
+	@pflake8 ./src ./tests ./gitlab_bot.py || (echo "Run 'make fmt' to fix the issues" && exit 1)
+	@black --check ./src ./tests ./gitlab_bot.py || (echo "Run 'make fmt' to fix the issues" && exit 1)
 
 fmt:
-	@black ./src
-	@isort --profile black ./src
-	@$(MAKE) lint
+	@black ./src ./tests ./gitlab_bot.py
+	@isort --profile black ./src ./tests ./gitlab_bot.py
 
 coverage: lint
 	@pytest --cov=an_copilot tests

@@ -19,7 +19,13 @@ from gidgetlab.aiohttp import GitLabBot
 
 load_dotenv()  # isort:skip
 
-from src.config import bot_gitlab_username, bot_gitlab_url, bot_gitlab_token, bot_port, bot_host
+from src.config import (
+    bot_gitlab_token,
+    bot_gitlab_url,
+    bot_gitlab_username,
+    bot_host,
+    bot_port,
+)
 from src.issue_hook import IssueHooks
 from src.logs import print_event
 from src.merge_request_hook import MergeRequestHooks
@@ -69,7 +75,7 @@ async def merge_request_updated_event(event, gl, *args, **kwargs):
 
 
 @bot.router.register("Merge Request Hook", action="reopen")
-async def merge_request_updated_event(event, gl, *args, **kwargs):
+async def merge_request_reopen_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
         await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
 

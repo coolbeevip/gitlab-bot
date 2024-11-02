@@ -6,7 +6,6 @@ from src.llm import ai_diffs_summary
 
 
 class TestLLM(TestCase):
-
     def test_ai_diffs_summary(self):
         with open("git_diff.json", "r") as f:
             git_diff_json = json.loads(f.read())
