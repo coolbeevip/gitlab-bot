@@ -1,4 +1,4 @@
-# Gitlab Bot 
+# Gitlab Bot | [中文](README_ZH.md)
 
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/coolbeevip/gitlab-bot/latest)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
