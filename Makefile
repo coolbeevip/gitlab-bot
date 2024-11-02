@@ -7,7 +7,10 @@ lint:
 fmt:
 	@black ./src
 	@isort --profile black ./src
-	@pflake8 ./src
+	@$(MAKE) lint
+
+coverage: lint
+	@pytest --cov=an_copilot tests
 
 i18n:
 	xgettext -d base -o src/locales/gitlab-bot.pot *.py

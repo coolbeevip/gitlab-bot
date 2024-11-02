@@ -16,21 +16,20 @@ import json
 import logging
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI, AzureChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import AzureChatOpenAI, ChatOpenAI
 
 from src.config import (
-    bot_language,
-    openai_api_base,
-    openai_api_key,
-    google_api_key,
+    AI_PROVIDER,
     azure_openai_api_key,
     azure_openai_api_version,
     azure_openai_endpoint,
+    bot_language,
+    google_api_key,
     model_name,
-    AI_PROVIDER
+    openai_api_base,
+    openai_api_key,
 )
-
 from src.i18n import _
 from src.prompts.prompts import get_prompt_text
 
@@ -51,11 +50,7 @@ if (
         max_retries=2,
     )
 
-if (
-    google_api_key is not None
-    and model_name is not None
-    and AI_PROVIDER == "google"
-):
+if google_api_key is not None and model_name is not None and AI_PROVIDER == "google":
     AI = ChatGoogleGenerativeAI(model=model_name)
 
 if (
@@ -70,8 +65,9 @@ if (
         api_version=azure_openai_api_version,
         temperature=0,
         timeout=300,
-        max_retries=2
+        max_retries=2,
     )
+
 
 def ai_diffs_summary(git_diff) -> str:
     summary_descriptions = []
@@ -88,7 +84,7 @@ def ai_diffs_summary(git_diff) -> str:
         HumanMessage(content=diff_string),
     ]
     try:
-        response = AI(messages)
+        response = AI.invoke(messages)
         summary_description = response.content
         summary_descriptions.append(f"* {summary_description}")
     except Exception as e:

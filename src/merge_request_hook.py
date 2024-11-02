@@ -14,34 +14,37 @@
 
 import logging
 import re
+from enum import Enum
 
 from src.config import (
+    bot_git_commit_message_check_enabled,
     bot_git_commit_subject_example_markdown,
     bot_git_commit_subject_max_length,
     bot_git_commit_subject_regex,
     bot_git_email_domain,
+    bot_gitlab_merge_request_aireview_label_enabled,
+    bot_gitlab_merge_request_approval_enabled,
+    bot_gitlab_merge_request_email_username_not_match_enabled,
     bot_gitlab_merge_request_issue_required,
     bot_gitlab_merge_request_milestone_required,
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
-    bot_gitlab_merge_request_email_username_not_match_enabled,
-    bot_git_commit_message_check_enabled,
-    bot_gitlab_merge_request_approval_enabled,
-    bot_gitlab_merge_request_aireview_label_enabled,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
 
-from enum import Enum
 
 class StatusLabel(Enum):
     AIReview = "MRStatus::AIReview"
+
 
 class StatusLabelAction(Enum):
     Add = "add"
     Remove = "remove"
 
+
 all_status_labels = list(StatusLabel)
+
 
 def check_changes(gl, project_id, iid):
     # url = f"/projects/{project_id}/merge_requests/{iid}/changes"
@@ -51,7 +54,7 @@ def check_changes(gl, project_id, iid):
 
 
 def check_commit_message(commit_msg):
-    if bot_git_commit_message_check_enabled == False:
+    if not bot_git_commit_message_check_enabled:
         return
     if len(commit_msg) > bot_git_commit_subject_max_length:
         raise Exception(
@@ -93,7 +96,10 @@ def check_email(commit_author_name, commit_author_email):
                     gitlab_email_domain=bot_git_email_domain,
                 )
             )
-        if bot_gitlab_merge_request_email_username_not_match_enabled and username != commit_author_name:
+        if (
+            bot_gitlab_merge_request_email_username_not_match_enabled
+            and username != commit_author_name
+        ):
             raise Exception(
                 _("email_username_not_match").format(
                     commit_author_name=commit_author_name,
@@ -109,9 +115,9 @@ async def generate_diff_description_summary(event, gl):
     iid = event.data["object_attributes"]["iid"]
     change_event = event.data["changes"]
     if not change_event:
-        logging.debug(f"MR has no code changes, AI Summary generation skipped...")
+        logging.debug("MR has no code changes, AI Summary generation skipped...")
         return None
-            
+
     if bot_gitlab_merge_request_summary_enabled and AI is not None:
         try:
             if not has_ai_review(description, labels):
@@ -140,18 +146,37 @@ async def generate_diff_description_summary(event, gl):
                 logging.debug("AI Summary generated.")
             else:
                 logging.debug("AI Summary found, skipping...")
-            
+
             # Add AI Review status label if not exists
-            if bot_gitlab_merge_request_aireview_label_enabled and not has_ai_review_label(labels):
-                await update_status_label(gl, project_id, iid, StatusLabel.AIReview.value, labels, StatusLabelAction.Add)
-        
+            if (
+                bot_gitlab_merge_request_aireview_label_enabled
+                and not has_ai_review_label(labels)
+            ):
+                await update_status_label(
+                    gl,
+                    project_id,
+                    iid,
+                    StatusLabel.AIReview.value,
+                    labels,
+                    StatusLabelAction.Add,
+                )
+
         except Exception as e:
             logging.error(e)
             raise e
     else:
-        logging.debug("AI Summary generation feature is disabled or AI feature is not available.")
+        logging.debug(
+            "AI Summary generation feature is disabled or AI feature is not available."
+        )
         # Remove AI Review status label
-        await update_status_label(gl, project_id, iid, StatusLabel.AIReview.value, labels, StatusLabelAction.Remove)
+        await update_status_label(
+            gl,
+            project_id,
+            iid,
+            StatusLabel.AIReview.value,
+            labels,
+            StatusLabelAction.Remove,
+        )
 
 
 async def check_commit(event, gl):
@@ -232,7 +257,10 @@ def is_opened_merge_request(event):
         merge_request_state = event.data["merge_request"]["state"]
     return merge_request_state == "opened"
 
-async def update_status_label(gl, pid, mr_iid, label, current_labels, action=StatusLabelAction.Add):
+
+async def update_status_label(
+    gl, pid, mr_iid, label, current_labels, action=StatusLabelAction.Add
+):
     if not is_status_label(label):
         logging.error(f"Label '{label}' is not a valid status label")
         return False, None
@@ -261,12 +289,14 @@ async def update_status_label(gl, pid, mr_iid, label, current_labels, action=Sta
     logging.debug(f"MR {mr_iid} labels updated successfully")
     return True, None
 
+
 def is_status_label(label):
     for status in all_status_labels:
         logging.debug(f"Checking label '{label}' against {status}")
         if label == status.value:
             return True
     return False
+
 
 def has_ai_review(description, labels):
     if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(labels):
@@ -275,16 +305,19 @@ def has_ai_review(description, labels):
         return True
     return False
 
+
 def has_ai_summary_description(description):
     if "AI Summary:" in description:
         return True
     return False
+
 
 def has_ai_review_label(labels):
     for label in labels:
         if label["title"] == StatusLabel.AIReview.value:
             return True
     return False
+
 
 class MergeRequestHooks:
     async def merge_request_opened_event(self, event, gl, *args, **kwargs):
