@@ -1,7 +1,9 @@
-name: ci
+name: Push Docker Image
 
 on:
   push:
+    branches:
+      - master
     paths:
       - "src/**"
       - "*.py"
