@@ -3,7 +3,9 @@
 ![Docker镜像版本（最新）](https://img.shields.io/docker/v/coolbeevip/gitlab-bot/latest)
 [![许可证](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-这是一个适用于 GitLab(13.2+) 的机器人，利用 [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) 来自动化某些任务：
+这是一个适用于 GitLab(13.2+) 的机器人，利用 [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) 来自动化一些任务
+
+## 功能
 
 #### 在合并请求中验证提交者的电子邮件域名。
 
@@ -54,19 +56,59 @@
 
 ## 如何使用
 
-启动 Gitlab Bot 实例非常简单：
+为了启动 GitLab Bot，您需要准备三个环境变量：`BOT_GITLAB_USERNAME`、`BOT_GITLAB_URL` 和 `BOT_GITLAB_TOKEN`。
+
+- **BOT_GITLAB_USERNAME**：这是您的 GitLab 用户名，用于识别您在 GitLab 上的账户。您可以在您的 GitLab 个人资料页面找到它。**(建议您为此创建一个新的用户，例如 `review-bot`)**
+  
+- **BOT_GITLAB_URL**：这是您的 GitLab 实例的 URL。如果您使用的是 GitLab.com，则 URL 将是 `https://gitlab.com`。如果您正在运行自托管的 GitLab 实例，请使用为其配置的 URL（例如 `http://your-gitlab-instance.com`）。
+
+- **BOT_GITLAB_TOKEN**：这是 `BOT_GITLAB_USERNAME` 的访问令牌，授予机器人与您的 GitLab 实例交互的权限。您可以通过以下步骤生成个人访问令牌：
+  1. 登录到您的 GitLab 账户。
+  2. 转到您的用户设置（点击右上角的个人资料图片，然后选择设置）。
+  3. 导航到 `访问令牌`。
+  4. 生成令牌并确保安全保存，因为它只会显示一次。
+  
+#### 启动 Gitlab Bot
 
 > 在 Docker 版本 19 中，使用 “--security-opt seccomp:unconfined” 选项运行容器时，可以禁用 seccomp 过滤器，允许进程执行任何系统调用。
 
 ```shell
 docker run --rm \
--e BOT_GITLAB_USERNAME="你的 Gitlab 用户名" \
--e BOT_GITLAB_URL="你的 Gitlab URL" \
--e BOT_GITLAB_TOKEN="你的 Gitlab 访问令牌" \
+-e BOT_GITLAB_USERNAME="review-bot" \
+-e BOT_GITLAB_URL="http://your-gitlab-instance.com" \
+-e BOT_GITLAB_TOKEN="<用户 review-bot 的 access token>" \
 -p 9998:9998 \
 coolbeevip/gitlab-bot
 ```
+#### 在 GitLab 中设置 Webhook
 
+为了使 GitLab Bot 能够响应事件，您需要在 GitLab 项目中配置 Webhook。请按照以下步骤操作：
+
+1. **打开项目视图**：
+   - 登录到 GitLab。
+   - 在仪表板中找到并点击您的项目。
+
+2. **进入 Webhook 设置**：
+   - 在左侧边栏菜单中，导航到 `设置` -> `Webhooks`。
+
+3. **添加新的 Webhook**：
+   - 点击 `添加新 webhook` 按钮。
+
+4. **填写信息**：
+   - 在出现的表单中，填写以下详细信息：
+     - **URL**：输入将接收 Webhook 请求的地址，例如 `http://localhost:9998`。
+     - **触发**：
+       - 选择您希望触发 Webhook 的事件，例如：
+         - `评论`（评论事件）
+         - `问题事件`（问题事件）
+         - `合并请求事件`（合并请求事件）
+
+5. **保存 Webhook**：
+   - 点击 `添加 webhook` 按钮以保存您的配置。
+
+6. **测试 Webhook（可选）**：
+   - 为确认 Webhook 是否设置正确，在 Webhooks 列表中找到新添加的 Webhook，并使用 `测试` 按钮发送测试请求。
+   
 ## 环境变量
 
 **`BOT_GITLAB_USERNAME` / `BOT_GITLAB_URL` / `BOT_GITLAB_TOKEN`**

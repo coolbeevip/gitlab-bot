@@ -3,7 +3,9 @@
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/coolbeevip/gitlab-bot/latest)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks:
+This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) to automate certain tasks
+
+## Features
 
 #### Verify if the submitters email domain during Merge requests.
 
@@ -54,18 +56,59 @@ This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/
 
 ## How to use
 
-Starting a Gitlab Bot instance is simple:
+In order to start the GitLab Bot, you'll need to prepare three environment variables: `BOT_GITLAB_USERNAME`, `BOT_GITLAB_URL`, and `BOT_GITLAB_TOKEN`.
+
+- **BOT_GITLAB_USERNAME**: This is your GitLab username, which identifies your account on GitLab. You can find it on your GitLab profile page. **(It is recommended that you create a new user for this, such as `review-bot`.)**
+  
+- **BOT_GITLAB_URL**: This is the URL of your GitLab instance. If you're using GitLab.com, the URL will be `https://gitlab.com`. If you're running a self-hosted GitLab instance, use the URL configured for it (e.g., `http://your-gitlab-instance.com`).
+
+- **BOT_GITLAB_TOKEN**: This is `BOT_GITLAB_USERNAME` access token that grants the bot permission to interact with your GitLab instance. You can generate a personal access token by following these steps:
+  1. Log in to your GitLab account.
+  2. Go to your user settings (click on your profile picture at the top right, then select Settings).
+  3. Navigate to `Access Tokens`.
+  4. Generate the token and make sure to save it securely, as it will be visible only once.
+
+#### Starting a Gitlab Bot:
 
 > In Docker version 19, utilizing the "--security-opt seccomp:unconfined" option when running a container with a preconfigured seccomp profile can disable the seccomp filter and allow processes to execute any system call.
 
 ```shell
 docker run --rm \
--e BOT_GITLAB_USERNAME="Your Gitlab Username" \
--e BOT_GITLAB_URL="Your Gitlab URL" \
--e BOT_GITLAB_TOKEN="Your Gitlab Access Token" \
+-e BOT_GITLAB_USERNAME="review-bot" \
+-e BOT_GITLAB_URL="http://your-gitlab-instance.com" \
+-e BOT_GITLAB_TOKEN="<User review-bot's access token> \
 -p 9998:9998 \
 coolbeevip/gitlab-bot
 ```
+
+#### Setting Up a Webhook in GitLab
+
+To enable the GitLab Bot to respond to events, you need to configure a Webhook in your GitLab project. Follow these steps:
+
+1. **Open Project View**:
+   - Log in to GitLab.
+   - In the dashboard, find and click on your project.
+
+2. **Enter Webhook Settings**:
+   - In the left sidebar menu, navigate to `Settings` -> `Webhooks`.
+
+3. **Add a New Webhook**:
+   - Click on the `Add new webhook` button.
+
+4. **Fill in the Information**:
+   - In the form that appears, fill in the following details:
+     - **URL**: Enter the address that will receive the Webhook requests, for example, `http://localhost:9998`.
+     - **Trigger**:
+       - Select the events you want to trigger the Webhook, such as:
+         - `Comments` (comment events)
+         - `Issues events` (issue events)
+         - `Merge request events` (merge request events)
+
+5. **Save the Webhook**:
+   - Click on the `Add webhook` button to save your configuration.
+
+6. **Test the Webhook (Optional)**:
+   - To confirm if the Webhook is set up correctly, locate the newly added Webhook in the Webhooks list and use the `Test` button to send a test request.
 
 ## Environment Variables
 
