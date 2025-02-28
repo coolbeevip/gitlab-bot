@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - "src/**"
+      - "*.py"
+      - "*.toml"
+      - "requirements.txt"
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "src/**"
+      - "*.py"
+      - "*.toml"
+      - "requirements.txt"
+      - ".github/workflows/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install Dependencies
+        run: make init
+      - name: Run Linter
+        run: make lint
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install Dependencies
+        run: make init
+      - name: Run Tests
+        run: make test

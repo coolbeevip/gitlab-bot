@@ -9,7 +9,7 @@ fmt:
 	@black ./src ./tests ./gitlab_bot.py
 	@isort --profile black ./src ./tests ./gitlab_bot.py
 
-coverage: lint
+test: lint
 	@pytest --cov=an_copilot tests
 
 i18n:
