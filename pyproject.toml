@@ -40,7 +40,7 @@ coverage = "7.2.7"
 pytest-cov = "4.1.0"
 
 [tool.ruff]
-line-length = 79
+line-length = 120
 fix = true
 target-version = "py39"
 

@@ -58,9 +58,7 @@ def check_commit_message(commit_msg):
         return
     if len(commit_msg) > bot_git_commit_subject_max_length:
         raise Exception(
-            _("commit_subject_max_length").format(
-                commit_subject_max_length=bot_git_commit_subject_max_length
-            )
+            _("commit_subject_max_length").format(commit_subject_max_length=bot_git_commit_subject_max_length)
         )
     if commit_msg.startswith("Merge branch "):
         return
@@ -96,10 +94,7 @@ def check_email(commit_author_name, commit_author_email):
                     gitlab_email_domain=bot_git_email_domain,
                 )
             )
-        if (
-            bot_gitlab_merge_request_email_username_not_match_enabled
-            and username != commit_author_name
-        ):
+        if bot_gitlab_merge_request_email_username_not_match_enabled and username != commit_author_name:
             raise Exception(
                 _("email_username_not_match").format(
                     commit_author_name=commit_author_name,
@@ -115,9 +110,7 @@ async def generate_diff_description_summary(event, gl):
     iid = event.data["object_attributes"]["iid"]
     change_event = event.data["changes"]
     if not change_event:
-        logging.debug(
-            "MR has no code changes, AI Summary generation skipped..."
-        )
+        logging.debug("MR has no code changes, AI Summary generation skipped...")
         return None
 
     if bot_gitlab_merge_request_summary_enabled and AI is not None:
@@ -126,25 +119,17 @@ async def generate_diff_description_summary(event, gl):
                 logging.debug("AI Summary not found, generating...")
                 try:
                     # Support 15.7+
-                    diff_url = (
-                        f"/projects/{project_id}/merge_requests/{iid}/diffs"
-                    )
+                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
                     diffs = await gl.getitem(diff_url)
                 except Exception as e:
-                    logging.warning(
-                        "Calling API /diffs error, trying to call /changes", e
-                    )
-                    diff_url = (
-                        f"/projects/{project_id}/merge_requests/{iid}/changes"
-                    )
+                    logging.warning("Calling API /diffs error, trying to call /changes", e)
+                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/changes"
                     changes = await gl.getitem(diff_url)
                     diffs = changes["changes"]
 
                 response_summary = ai_diffs_summary(diffs)
 
-                merge_request_post_note_url = (
-                    f"/projects/{project_id}/merge_requests/{iid}/notes"
-                )
+                merge_request_post_note_url = f"/projects/{project_id}/merge_requests/{iid}/notes"
                 await gl.post(
                     merge_request_post_note_url,
                     data={"body": response_summary},
@@ -154,10 +139,7 @@ async def generate_diff_description_summary(event, gl):
                 logging.debug("AI Summary found, skipping...")
 
             # Add AI Review status label if not exists
-            if (
-                bot_gitlab_merge_request_aireview_label_enabled
-                and not has_ai_review_label(labels)
-            ):
+            if bot_gitlab_merge_request_aireview_label_enabled and not has_ai_review_label(labels):
                 await update_status_label(
                     gl,
                     project_id,
@@ -171,9 +153,7 @@ async def generate_diff_description_summary(event, gl):
             logging.error(e)
             raise e
     else:
-        logging.debug(
-            "AI Summary generation feature is disabled or AI feature is not available."
-        )
+        logging.debug("AI Summary generation feature is disabled or AI feature is not " "available.")
         # Remove AI Review status label
         await update_status_label(
             gl,
@@ -189,32 +169,22 @@ async def check_commit(event, gl):
     project_id = event.project_id
     if event.data["event_type"] == "note":
         commit_title = event.data["merge_request"]["last_commit"]["title"]
-        commit_author_name = event.data["merge_request"]["last_commit"][
-            "author"
-        ]["name"]
-        commit_author_email = event.data["merge_request"]["last_commit"][
-            "author"
-        ]["email"]
+        commit_author_name = event.data["merge_request"]["last_commit"]["author"]["name"]
+        commit_author_email = event.data["merge_request"]["last_commit"]["author"]["email"]
         iid = event.data["merge_request"]["iid"]
         milestone_id = event.data["merge_request"]["milestone_id"]
         # source_branch = event.data["merge_request"]["source_branch"]
         description = event.data["merge_request"]["description"]
     elif event.data["event_type"] == "merge_request":
         commit_title = event.data["object_attributes"]["last_commit"]["title"]
-        commit_author_name = event.data["object_attributes"]["last_commit"][
-            "author"
-        ]["name"]
-        commit_author_email = event.data["object_attributes"]["last_commit"][
-            "author"
-        ]["email"]
+        commit_author_name = event.data["object_attributes"]["last_commit"]["author"]["name"]
+        commit_author_email = event.data["object_attributes"]["last_commit"]["author"]["email"]
         iid = event.data["object_attributes"]["iid"]
         milestone_id = event.data["object_attributes"]["milestone_id"]
         # source_branch = event.data["object_attributes"]["source_branch"]
         description = event.data["object_attributes"]["description"]
 
-    merge_request_post_note_url = (
-        f"/projects/{project_id}/merge_requests/{iid}/notes"
-    )
+    merge_request_post_note_url = f"/projects/{project_id}/merge_requests/{iid}/notes"
     try:
         check_email(commit_author_name, commit_author_email)
         check_commit_message(commit_title)
@@ -246,9 +216,7 @@ async def check_commit(event, gl):
 
 
 async def approval_merge_request(project_id, iid, gl):
-    query_approvals_url = (
-        f"/projects/{project_id}/merge_requests/{iid}/approvals"
-    )
+    query_approvals_url = f"/projects/{project_id}/merge_requests/{iid}/approvals"
     approvals = gl.getitem(query_approvals_url)
     bot_approved = False
     if approvals.approved:
@@ -257,9 +225,7 @@ async def approval_merge_request(project_id, iid, gl):
                 bot_approved = True
                 return
     if not bot_approved:
-        await gl.post(
-            f"/projects/{project_id}/merge_requests/{iid}/approve", data=None
-        )
+        await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
 
 
 def is_opened_merge_request(event):
@@ -270,9 +236,7 @@ def is_opened_merge_request(event):
     return merge_request_state == "opened"
 
 
-async def update_status_label(
-    gl, pid, mr_iid, label, current_labels, action=StatusLabelAction.Add
-):
+async def update_status_label(gl, pid, mr_iid, label, current_labels, action=StatusLabelAction.Add):
     if not is_status_label(label):
         logging.error(f"Label '{label}' is not a valid status label")
         return False, None
@@ -282,18 +246,14 @@ async def update_status_label(
             to_update.append(label)
             logging.debug(f"Adding status label '{label}' to MR {mr_iid}")
         else:
-            logging.debug(
-                f"Status label '{label}' already exists in MR {mr_iid}"
-            )
+            logging.debug(f"Status label '{label}' already exists in MR {mr_iid}")
             return False, None
     elif action == StatusLabelAction.Remove:
         if label in to_update:
             to_update.remove(label)
             logging.debug(f"Removing status label '{label}' from MR {mr_iid}")
         else:
-            logging.debug(
-                f"Status label '{label}' does not exist in MR {mr_iid}"
-            )
+            logging.debug(f"Status label '{label}' does not exist in MR {mr_iid}")
             return False, None
     else:
         logging.error(f"Invalid action '{action}' for updating status label")
@@ -315,9 +275,7 @@ def is_status_label(label):
 
 
 def has_ai_review(description, labels):
-    if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(
-        labels
-    ):
+    if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(labels):
         return True
     if has_ai_summary_description(description):
         return True

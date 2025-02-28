@@ -17,9 +17,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()  # isort:skip
-DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = (
-    "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
-)
+DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE = "^(fix|feat|docs|style|refactor|test|chore|build|ci): .*$"
 DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN_VALUE = """
 * feat: Add authentication module   
 * fix: Resolve issue with login not working
@@ -94,9 +92,7 @@ bot_git_commit_subject_regex_enabled = (
     ).lower()
     == "true"
 )
-bot_git_commit_subject_regex = os.getenv(
-    "BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE
-)
+bot_git_commit_subject_regex = os.getenv("BOT_GIT_COMMIT_SUBJECT_REGEX", DEFAULT_BOT_GIT_COMMIT_SUBJECT_REGEX_VALUE)
 bot_git_commit_subject_example_markdown = os.getenv(
     "BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN",
     DEFAULT_BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN_VALUE,
@@ -131,13 +127,9 @@ bot_gitlab_merge_request_summary_enabled = (
     == "true"
 )
 # gitlab merge request summary
-bot_gitlab_merge_request_summary_language = os.getenv(
-    "BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE", "English"
-)
+bot_gitlab_merge_request_summary_language = os.getenv("BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE", "English")
 
-bot_gitlab_merge_request_summary_prompt_rule = os.getenv(
-    "BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE", None
-)
+bot_gitlab_merge_request_summary_prompt_rule = os.getenv("BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE", None)
 
 # gitlab merge request email username not match check
 bot_gitlab_merge_request_email_username_not_match_enabled = (

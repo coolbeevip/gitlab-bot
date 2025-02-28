@@ -11,7 +11,8 @@ class TestPrompts(TestCase):
             get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh"),
         )
         self.assertIn(
-            "You are an intelligent robot proficient in multiple programming languages and good at reading git-dff reports",
+            "You are an intelligent robot proficient in multiple programming "
+            "languages and good at reading git-dff reports",
             get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en"),
         )
         self.assertNotIn(
@@ -27,15 +28,11 @@ class TestPrompts(TestCase):
         custom_rules = "1. RULE1\n2. RULE2"
         self.assertIn(
             "1. RULE1\n2. RULE2",
-            get_summary_prompt_text(
-                "DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh", custom_rules
-            ),
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh", custom_rules),
         )
         self.assertIn(
             "1. RULE1\n2. RULE2",
-            get_summary_prompt_text(
-                "DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en", custom_rules
-            ),
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en", custom_rules),
         )
         self.assertNotIn(
             "<RULES>",

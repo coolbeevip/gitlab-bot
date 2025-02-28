@@ -3,9 +3,7 @@ import re
 from typing import Optional
 
 
-def get_summary_prompt_text(
-    name: str, lang: str, custom_rule: Optional[str] = None
-) -> str:
+def get_summary_prompt_text(name: str, lang: str, custom_rule: Optional[str] = None) -> str:
     current_directory = os.path.dirname(os.path.realpath(__file__))
     path = os.path.join(current_directory, f"{name}_{lang}.txt")
     with open(path, "r", encoding="UTF-8") as file:
@@ -20,7 +18,5 @@ def get_summary_prompt_text(
             )
         else:
             # Remove the tags
-            summary_prompt = summary_prompt.replace("<RULES>\n", "").replace(
-                "</RULES>\n", ""
-            )
+            summary_prompt = summary_prompt.replace("<RULES>\n", "").replace("</RULES>\n", "")
         return summary_prompt
