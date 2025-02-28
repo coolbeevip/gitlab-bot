@@ -24,6 +24,7 @@ from src.config import (
     azure_openai_api_key,
     azure_openai_api_version,
     azure_openai_endpoint,
+    bot_gitlab_merge_request_summary_prompt_rule,
     bot_language,
     google_api_key,
     model_name,
@@ -31,7 +32,7 @@ from src.config import (
     openai_api_key,
 )
 from src.i18n import _
-from src.prompts.prompts import get_prompt_text
+from src.prompts.prompts import get_summary_prompt_text
 
 AI = None
 
@@ -77,8 +78,10 @@ def ai_diffs_summary(git_diff) -> str:
     logging.info(f"diffs_string: {diff_string}")
     messages = [
         SystemMessage(
-            content=get_prompt_text(
-                name="DIFFS_SUMMARY_PROMPTS_TEMPLATE", lang=bot_language
+            content=get_summary_prompt_text(
+                name="DIFFS_SUMMARY_PROMPTS_TEMPLATE",
+                lang=bot_language,
+                custom_rule=bot_gitlab_merge_request_summary_prompt_rule,
             )
         ),
         HumanMessage(content=diff_string),

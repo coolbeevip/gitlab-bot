@@ -135,6 +135,10 @@ bot_gitlab_merge_request_summary_language = os.getenv(
     "BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE", "English"
 )
 
+bot_gitlab_merge_request_summary_prompt_rule = os.getenv(
+    "BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE", None
+)
+
 # gitlab merge request email username not match check
 bot_gitlab_merge_request_email_username_not_match_enabled = (
     os.getenv(

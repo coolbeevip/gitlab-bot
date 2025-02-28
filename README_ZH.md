@@ -179,10 +179,11 @@ BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN="* feat: 添加认证模块\n* fix: 解
 
 该参数指定要使用的 AI 模型后端。默认值为 `openai`，但您可以切换为 `google`（用于 Google 模型）或 `azure-openai`（用于 Azure OpenAI 模型）。
 
-**`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE`**
+**`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE`**
 
 `BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` 参数控制系统是否生成 GitLab 合并请求的摘要。默认设置为 `true`。
 `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` 参数指定生成的合并请求摘要的语言。默认设置为 `English`。但您可以根据需要更改为任何首选的语言代码。
+`BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE` 参数指定生成合并请求摘要的提示规则。您可以根据需要更改为任何首选的提示规则，例如：`1. 请高度概括并总结\n2. 请使用中文输出`。
 
 **`BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED`**
 

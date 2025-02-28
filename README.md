@@ -180,10 +180,11 @@ These parameters are used to connect Azure OpenAI models.
 
 This parameter specifies the AI model backend to use. The default value is `openai`, but you can switch to `google` for Google models or `azure-openai` for Azure OpenAI models.
 
-**`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE`**
+**`BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` / `BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE` **
 
 The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_ENABLED` parameter controls whether the system generates a summary for GitLab merge requests. By default, it is set to `true`.
 The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_LANGUAGE` parameter specifies the language in which the generated merge request summaries will be written. By default, it is set to `English`. However, you can change it to any preferred language code if needed.
+The `BOT_GITLAB_MERGE_REQUEST_SUMMARY_PROMPT_RULE` The parameters specify the prompt rules for generating a merge request summary. You can change it to any preferred prompt rule as needed, for example: `1. Please summarize and condense highly\n2. Please output in English`.
 
 **`BOT_GITLAB_MERGE_REQUEST_EMAIL_USERNAME_NOT_MATCH_ENABLED`**
 
