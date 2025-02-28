@@ -28,7 +28,7 @@ jobs:
           python-version: '3.9'
           cache: 'pip'
       - name: Install Poetry
-        run: pip install poetry
+        run: pip install poetry ruff
       - name: Install Dependencies
         run: poetry install --with dev
       - name: Cache Poetry dependencies
