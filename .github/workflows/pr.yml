@@ -30,7 +30,7 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
       - name: Install Dependencies
-        run: pip install -e .
+        run: poetry install --with dev
       - name: Run ruff
         run: poetry run ruff check
 
