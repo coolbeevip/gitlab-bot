@@ -44,6 +44,6 @@ jobs:
           python-version: '3.9'
           cache: 'pip'
       - name: Install Dependencies
-        run: pip install -e .
+        run: poetry install --with dev
       - name: Run Tests
         run: poetry run pytest tests
