@@ -18,7 +18,5 @@ import os
 from src.config import bot_language
 
 localedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "locales")
-translate = gettext.translation(
-    "gitlab-bot", localedir, fallback=True, languages=[bot_language]
-)
+translate = gettext.translation("gitlab-bot", localedir, fallback=True, languages=[bot_language])
 _ = translate.gettext

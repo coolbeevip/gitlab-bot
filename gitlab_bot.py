@@ -17,8 +17,6 @@ import logging
 from dotenv import load_dotenv
 from gidgetlab.aiohttp import GitLabBot
 
-load_dotenv()  # isort:skip
-
 from src.config import (
     bot_gitlab_token,
     bot_gitlab_url,
@@ -30,6 +28,8 @@ from src.issue_hook import IssueHooks
 from src.logs import print_event
 from src.merge_request_hook import MergeRequestHooks
 from src.note_hook import NoteHooks
+
+load_dotenv()  # isort:skip
 
 bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab_token)
 

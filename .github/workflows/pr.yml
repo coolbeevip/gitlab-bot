@@ -17,33 +17,24 @@ on:
       - ".github/workflows/**"
 
 jobs:
-  lint:
+  ruff:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Out Repo
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-      - name: Install Dependencies
-        run: make init
-      - name: Run Linter
-        run: make lint
+    - uses: actions/checkout@v4
+    - name: Set up Python environment and install dependencies
+      uses: ./.github/actions/setup
+      with:
+        python-version: "3.10"
+    - name: Ruff Check
+      run: poetry run ruff check
 
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Check Out Repo
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-      - name: Install Dependencies
-        run: make init
-      - name: Run Tests
-        run: make test
+    - uses: actions/checkout@v4
+    - name: Set up Python environment and install dependencies
+      uses: ./.github/actions/setup
+      with:
+        python-version: "3.9"
+    - name: Ruff Check
+      run: poetry run pytest tests

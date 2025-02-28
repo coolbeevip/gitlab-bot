@@ -12,17 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.9-buster as builder
+FROM python:3.9-buster AS builder
 
 WORKDIR /usr/app
+
+# Create and activate virtual environment
 RUN python -m venv /usr/app/venv
 ENV PATH="/usr/app/venv/bin:$PATH"
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Install dependencies
+COPY poetry.lock pyproject.toml ./
+# Install dependencies only (no dev dependencies)
+RUN poetry export -f requirements.txt | pip install -r /dev/stdin
 
-FROM python:3.9-slim as production
+# Install project
+COPY . .
+RUN pip install -e .
 
+FROM python:3.9-slim AS production
+
+# Set environment variables in separate layers for better caching
 ENV BOT_LANGUAGE="en" \
     BOT_HOST="0.0.0.0" \
     BOT_PORT=9998 \
@@ -32,9 +41,16 @@ ENV BOT_LANGUAGE="en" \
     BOT_GITLAB_MERGE_REQUEST_MILESTONE_REQUIRED=false
 
 WORKDIR /usr/app
+
+# Copy only necessary files from builder
 COPY --from=builder /usr/app/venv ./venv
 COPY src src
 COPY gitlab_bot.py gitlab_bot.py
 
 ENV PATH="/usr/app/venv/bin:$PATH"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${BOT_PORT}/ || exit 1
+
 CMD [ "python", "gitlab_bot.py" ]

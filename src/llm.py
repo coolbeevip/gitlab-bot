@@ -36,12 +36,7 @@ from src.prompts.prompts import get_summary_prompt_text
 
 AI = None
 
-if (
-    model_name is not None
-    and openai_api_key is not None
-    and openai_api_base is not None
-    and AI_PROVIDER == "openai"
-):
+if model_name is not None and openai_api_key is not None and openai_api_base is not None and AI_PROVIDER == "openai":
     AI = ChatOpenAI(
         openai_api_base=openai_api_base,
         openai_api_key=openai_api_key,

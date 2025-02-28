@@ -22,7 +22,8 @@ async def bot_issue_help(event, gl):
     project_id = event.project_id
     idd = event.data["issue"]["iid"]
     await gl.post(
-        f"/projects/{project_id}/issues/{idd}/notes", data={"body": _("bot_issue_help")}
+        f"/projects/{project_id}/issues/{idd}/notes",
+        data={"body": _("bot_issue_help")},
     )
 
 
@@ -38,9 +39,7 @@ async def parse_milestone_release_note(event, gl):
         match = re.search(pattern, note)
         if match:
             milestone_name = match.group(1)
-            milestones_query_url = (
-                f"/projects/{project_id}/milestones?title={milestone_name}"
-            )
+            milestones_query_url = f"/projects/{project_id}/milestones?title={milestone_name}"
             milestones = await gl.getitem(milestones_query_url)
             if len(milestones) == 1:
                 milestone_id = milestones[0]["id"]
@@ -50,18 +49,12 @@ async def parse_milestone_release_note(event, gl):
                 merge_requests = await gl.getitem(query_merge_requests_by_milestone_url)
                 notes = []
                 for merge_request in merge_requests:
-                    notes.append(
-                        f"* [{merge_request['title']}]({merge_request['web_url']})\n"
-                    )
-                message = _("milestone_release_note").format(
-                    milestone=milestone_name, notes="".join(notes)
-                )
+                    notes.append(f"* [{merge_request['title']}]({merge_request['web_url']})\n")
+                message = _("milestone_release_note").format(milestone=milestone_name, notes="".join(notes))
             else:
                 message = _("milestone_not_found").format(milestone=milestone_name)
         else:
-            raise Exception(
-                _("invalid_bot_action").format(action="/bot-release-note 1.0.0")
-            )
+            raise Exception(_("invalid_bot_action").format(action="/bot-release-note 1.0.0"))
     except Exception as e:
         message = str(e)
 
@@ -75,9 +68,7 @@ async def automatically_mark_label_outdated_issues(event, gl, days_ago=14):
     # get all issues updated before N days ago
     date_days_ago = datetime.now() - timedelta(days=days_ago)
     updated_before = date_days_ago.strftime("%Y-%m-%d")
-    old_issues = await gl.getitem(
-        f"/projects/{project_id}/issues?state=opened&updated_before={updated_before}"
-    )
+    old_issues = await gl.getitem(f"/projects/{project_id}/issues?state=opened&updated_before={updated_before}")
     outdated_issue_label = "Outdated"
     if len(old_issues) > 0:
         for issue in old_issues:
@@ -91,7 +82,10 @@ async def automatically_mark_label_outdated_issues(event, gl, days_ago=14):
                     # create label
                     await gl.post(
                         f"/projects/{project_id}/labels",
-                        data={"name": outdated_issue_label, "color": "#6699cc"},
+                        data={
+                            "name": outdated_issue_label,
+                            "color": "#6699cc",
+                        },
                     )
                 # add label to issue
                 issue_labels.append(outdated_issue_label)
