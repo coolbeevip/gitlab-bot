@@ -10,7 +10,7 @@ fmt:
 	@isort --profile black ./src ./tests ./gitlab_bot.py
 
 test: lint
-	@pytest --cov=an_copilot tests
+	@pytest --cov=src tests
 
 i18n:
 	xgettext -d base -o src/locales/gitlab-bot.pot *.py
