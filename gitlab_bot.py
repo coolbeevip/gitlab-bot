@@ -31,7 +31,9 @@ from src.logs import print_event
 from src.merge_request_hook import MergeRequestHooks
 from src.note_hook import NoteHooks
 
-bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab_token)
+bot = GitLabBot(
+    bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab_token
+)
 
 issue_hooks = IssueHooks()
 merge_request_hooks = MergeRequestHooks()
@@ -65,25 +67,33 @@ async def note_issue_event(event, gl, *args, **kwargs):
 @bot.router.register("Merge Request Hook", action="open")
 async def merge_request_opened_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
-        await merge_request_hooks.merge_request_opened_event(event, gl, args, kwargs)
+        await merge_request_hooks.merge_request_opened_event(
+            event, gl, args, kwargs
+        )
 
 
 @bot.router.register("Merge Request Hook", action="update")
 async def merge_request_updated_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
-        await merge_request_hooks.merge_request_updated_event(event, gl, args, kwargs)
+        await merge_request_hooks.merge_request_updated_event(
+            event, gl, args, kwargs
+        )
 
 
 @bot.router.register("Merge Request Hook", action="reopen")
 async def merge_request_reopen_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
-        await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
+        await merge_request_hooks.merge_request_reopen_event(
+            event, gl, args, kwargs
+        )
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")
 async def note_merge_request_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
-        await merge_request_hooks.note_merge_request_event(event, gl, args, kwargs)
+        await merge_request_hooks.note_merge_request_event(
+            event, gl, args, kwargs
+        )
 
 
 @bot.router.register("Note Hook", noteable_type="Commit")
@@ -104,7 +114,9 @@ def ignore_event(event) -> bool:
     if username != bot_gitlab_username:
         return False
     else:
-        logging.info("Ignore event: %s triggered by admin", event.data["event_type"])
+        logging.info(
+            "Ignore event: %s triggered by admin", event.data["event_type"]
+        )
         return True
 
 

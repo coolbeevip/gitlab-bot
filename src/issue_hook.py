@@ -22,7 +22,8 @@ async def bot_issue_help(event, gl):
     project_id = event.project_id
     idd = event.data["issue"]["iid"]
     await gl.post(
-        f"/projects/{project_id}/issues/{idd}/notes", data={"body": _("bot_issue_help")}
+        f"/projects/{project_id}/issues/{idd}/notes",
+        data={"body": _("bot_issue_help")},
     )
 
 
@@ -44,10 +45,10 @@ async def parse_milestone_release_note(event, gl):
             milestones = await gl.getitem(milestones_query_url)
             if len(milestones) == 1:
                 milestone_id = milestones[0]["id"]
-                query_merge_requests_by_milestone_url = (
-                    f"/projects/{project_id}/milestones/{milestone_id}/merge_requests"
+                query_merge_requests_by_milestone_url = f"/projects/{project_id}/milestones/{milestone_id}/merge_requests"
+                merge_requests = await gl.getitem(
+                    query_merge_requests_by_milestone_url
                 )
-                merge_requests = await gl.getitem(query_merge_requests_by_milestone_url)
                 notes = []
                 for merge_request in merge_requests:
                     notes.append(
@@ -57,10 +58,14 @@ async def parse_milestone_release_note(event, gl):
                     milestone=milestone_name, notes="".join(notes)
                 )
             else:
-                message = _("milestone_not_found").format(milestone=milestone_name)
+                message = _("milestone_not_found").format(
+                    milestone=milestone_name
+                )
         else:
             raise Exception(
-                _("invalid_bot_action").format(action="/bot-release-note 1.0.0")
+                _("invalid_bot_action").format(
+                    action="/bot-release-note 1.0.0"
+                )
             )
     except Exception as e:
         message = str(e)
@@ -91,7 +96,10 @@ async def automatically_mark_label_outdated_issues(event, gl, days_ago=14):
                     # create label
                     await gl.post(
                         f"/projects/{project_id}/labels",
-                        data={"name": outdated_issue_label, "color": "#6699cc"},
+                        data={
+                            "name": outdated_issue_label,
+                            "color": "#6699cc",
+                        },
                     )
                 # add label to issue
                 issue_labels.append(outdated_issue_label)

@@ -15,10 +15,12 @@ class TestPrompts(TestCase):
             get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en"),
         )
         self.assertNotIn(
-            "<RULES>", get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en")
+            "<RULES>",
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en"),
         )
         self.assertNotIn(
-            "</RULES>", get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh")
+            "</RULES>",
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh"),
         )
 
     def test_load_custom_prompt(self):
@@ -36,10 +38,12 @@ class TestPrompts(TestCase):
             ),
         )
         self.assertNotIn(
-            "<RULES>", get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en")
+            "<RULES>",
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "en"),
         )
         self.assertNotIn(
-            "</RULES>", get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh")
+            "</RULES>",
+            get_summary_prompt_text("DIFFS_SUMMARY_PROMPTS_TEMPLATE", "zh"),
         )
 
 

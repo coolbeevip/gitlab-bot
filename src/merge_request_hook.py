@@ -115,7 +115,9 @@ async def generate_diff_description_summary(event, gl):
     iid = event.data["object_attributes"]["iid"]
     change_event = event.data["changes"]
     if not change_event:
-        logging.debug("MR has no code changes, AI Summary generation skipped...")
+        logging.debug(
+            "MR has no code changes, AI Summary generation skipped..."
+        )
         return None
 
     if bot_gitlab_merge_request_summary_enabled and AI is not None:
@@ -124,13 +126,17 @@ async def generate_diff_description_summary(event, gl):
                 logging.debug("AI Summary not found, generating...")
                 try:
                     # Support 15.7+
-                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/diffs"
+                    diff_url = (
+                        f"/projects/{project_id}/merge_requests/{iid}/diffs"
+                    )
                     diffs = await gl.getitem(diff_url)
                 except Exception as e:
                     logging.warning(
                         "Calling API /diffs error, trying to call /changes", e
                     )
-                    diff_url = f"/projects/{project_id}/merge_requests/{iid}/changes"
+                    diff_url = (
+                        f"/projects/{project_id}/merge_requests/{iid}/changes"
+                    )
                     changes = await gl.getitem(diff_url)
                     diffs = changes["changes"]
 
@@ -183,30 +189,32 @@ async def check_commit(event, gl):
     project_id = event.project_id
     if event.data["event_type"] == "note":
         commit_title = event.data["merge_request"]["last_commit"]["title"]
-        commit_author_name = event.data["merge_request"]["last_commit"]["author"][
-            "name"
-        ]
-        commit_author_email = event.data["merge_request"]["last_commit"]["author"][
-            "email"
-        ]
+        commit_author_name = event.data["merge_request"]["last_commit"][
+            "author"
+        ]["name"]
+        commit_author_email = event.data["merge_request"]["last_commit"][
+            "author"
+        ]["email"]
         iid = event.data["merge_request"]["iid"]
         milestone_id = event.data["merge_request"]["milestone_id"]
         # source_branch = event.data["merge_request"]["source_branch"]
         description = event.data["merge_request"]["description"]
     elif event.data["event_type"] == "merge_request":
         commit_title = event.data["object_attributes"]["last_commit"]["title"]
-        commit_author_name = event.data["object_attributes"]["last_commit"]["author"][
-            "name"
-        ]
-        commit_author_email = event.data["object_attributes"]["last_commit"]["author"][
-            "email"
-        ]
+        commit_author_name = event.data["object_attributes"]["last_commit"][
+            "author"
+        ]["name"]
+        commit_author_email = event.data["object_attributes"]["last_commit"][
+            "author"
+        ]["email"]
         iid = event.data["object_attributes"]["iid"]
         milestone_id = event.data["object_attributes"]["milestone_id"]
         # source_branch = event.data["object_attributes"]["source_branch"]
         description = event.data["object_attributes"]["description"]
 
-    merge_request_post_note_url = f"/projects/{project_id}/merge_requests/{iid}/notes"
+    merge_request_post_note_url = (
+        f"/projects/{project_id}/merge_requests/{iid}/notes"
+    )
     try:
         check_email(commit_author_name, commit_author_email)
         check_commit_message(commit_title)
@@ -238,7 +246,9 @@ async def check_commit(event, gl):
 
 
 async def approval_merge_request(project_id, iid, gl):
-    query_approvals_url = f"/projects/{project_id}/merge_requests/{iid}/approvals"
+    query_approvals_url = (
+        f"/projects/{project_id}/merge_requests/{iid}/approvals"
+    )
     approvals = gl.getitem(query_approvals_url)
     bot_approved = False
     if approvals.approved:
@@ -247,7 +257,9 @@ async def approval_merge_request(project_id, iid, gl):
                 bot_approved = True
                 return
     if not bot_approved:
-        await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
+        await gl.post(
+            f"/projects/{project_id}/merge_requests/{iid}/approve", data=None
+        )
 
 
 def is_opened_merge_request(event):
@@ -270,14 +282,18 @@ async def update_status_label(
             to_update.append(label)
             logging.debug(f"Adding status label '{label}' to MR {mr_iid}")
         else:
-            logging.debug(f"Status label '{label}' already exists in MR {mr_iid}")
+            logging.debug(
+                f"Status label '{label}' already exists in MR {mr_iid}"
+            )
             return False, None
     elif action == StatusLabelAction.Remove:
         if label in to_update:
             to_update.remove(label)
             logging.debug(f"Removing status label '{label}' from MR {mr_iid}")
         else:
-            logging.debug(f"Status label '{label}' does not exist in MR {mr_iid}")
+            logging.debug(
+                f"Status label '{label}' does not exist in MR {mr_iid}"
+            )
             return False, None
     else:
         logging.error(f"Invalid action '{action}' for updating status label")
@@ -299,7 +315,9 @@ def is_status_label(label):
 
 
 def has_ai_review(description, labels):
-    if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(labels):
+    if bot_gitlab_merge_request_aireview_label_enabled and has_ai_review_label(
+        labels
+    ):
         return True
     if has_ai_summary_description(description):
         return True

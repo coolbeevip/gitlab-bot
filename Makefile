@@ -1,22 +1,20 @@
 init:
-	pip install . '.[lint]' '.[test]' '.[package]'
+	@pip install -e .
 
 lint:
-	@pflake8 ./src ./tests ./gitlab_bot.py || (echo "Run 'make fmt' to fix the issues" && exit 1)
-	@black --check ./src ./tests ./gitlab_bot.py || (echo "Run 'make fmt' to fix the issues" && exit 1)
+	@poetry run ruff check
 
 fmt:
-	@black ./src ./tests ./gitlab_bot.py
-	@isort --profile black ./src ./tests ./gitlab_bot.py
+	@poetry run ruff format
 
 test: lint
-	@pytest --cov=src tests
+	@poetry run pytest tests
 
 i18n:
 	xgettext -d base -o src/locales/gitlab-bot.pot *.py
 	msgfmt -o src/locales/en/LC_MESSAGES/gitlab-bot.mo src/locales/en/LC_MESSAGES/gitlab-bot.po
 	msgfmt -o src/locales/zh/LC_MESSAGES/gitlab-bot.mo src/locales/zh/LC_MESSAGES/gitlab-bot.po
 
-docker-build:
+docker:
 	export DOCKER_BUILDKIT=1
 	docker build -t coolbeevip/gitlab-bot --cache-from coolbeevip/gitlab-bot --build-arg BUILDKIT_INLINE_CACHE=1 .

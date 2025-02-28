@@ -51,7 +51,11 @@ if (
         max_retries=2,
     )
 
-if google_api_key is not None and model_name is not None and AI_PROVIDER == "google":
+if (
+    google_api_key is not None
+    and model_name is not None
+    and AI_PROVIDER == "google"
+):
     AI = ChatGoogleGenerativeAI(model=model_name)
 
 if (
