@@ -14,8 +14,8 @@ class TestLLM(TestCase):
         with open(file_path, "r") as f:
             git_diff_json = json.loads(f.read())
             summary_report = ai_diffs_summary(git_diff_json)
-            self.assertIn("AI 摘要(实验)", summary_report)
-            self.assertIn("AI 模型", summary_report)
+            self.assertIn("AI Summary(experiment)", summary_report)
+            self.assertIn("Powered by", summary_report)
             print(summary_report)
 
 
