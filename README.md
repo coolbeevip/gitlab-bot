@@ -164,6 +164,10 @@ In GitLab, it is necessary to set a milestone when creating a merge request. By 
 
 Merge requests can only be merged if the source branch is associated with an existing issue. By default, this requirement is disabled.
 
+**`BOT_GITLAB_MERGE_REQUEST_REVIEWER_USERNAME`**
+
+This parameter specifies the username of a required reviewer for merge requests. If set, merge requests will only be processed by the bot if a reviewer with this username is assigned. If not set, this check is skipped.
+
 **`OPENAI_API_BASE` / `OPENAI_API_KEY` / `OPENAI_API_MODEL`**
 
 These parameters are used to connect the OPENAI model.

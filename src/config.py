@@ -157,3 +157,5 @@ bot_gitlab_merge_request_aireview_label_enabled = (
     ).lower()
     == "true"
 )
+
+bot_gitlab_merge_request_reviewer_username = os.getenv("BOT_GITLAB_MERGE_REQUEST_REVIEWER_USERNAME", None)
