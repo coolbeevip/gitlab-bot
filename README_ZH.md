@@ -163,6 +163,10 @@ BOT_GIT_COMMIT_SUBJECT_EXAMPLES_MARKDOWN="* feat: 添加认证模块\n* fix: 解
 
 只有当源分支与现有问题相关联时，才能合并合并请求。默认情况下，此要求处于禁用状态。
 
+**`BOT_GITLAB_MERGE_REQUEST_REVIEWER_USERNAME`**
+
+此参数指定合并请求所需审阅者的用户名。如果设置，只有在分配了该用户名的审阅者时，机器人才会处理合并请求。如果未设置，则跳过此检查。
+
 **`OPENAI_API_BASE` / `OPENAI_API_KEY` / `OPENAI_API_MODEL`**
 
 这些参数用于连接 OPENAI 模型。
