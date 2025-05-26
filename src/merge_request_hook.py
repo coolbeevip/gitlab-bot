@@ -29,6 +29,7 @@ from src.config import (
     bot_gitlab_merge_request_milestone_required,
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
+    bot_gitlab_merge_request_reviewer_username,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
@@ -101,6 +102,29 @@ def check_email(commit_author_name, commit_author_email):
                     commit_author_email=commit_author_email,
                 )
             )
+
+
+def has_required_reviewer(event_data):
+    """Checks if the configured required reviewer is present in the merge request reviewers list."""
+    required_username = bot_gitlab_merge_request_reviewer_username
+    if not required_username:
+        # If no required username is configured, the check passes
+        return True
+
+    reviewers = []
+    event_type = event_data.get("event_type")
+
+    if event_type == "merge_request":
+        reviewers = event_data.get("reviewers", [])
+
+    if not reviewers:
+        return False
+
+    for reviewer in reviewers:
+        if reviewer.get("username") == required_username:
+            return True
+
+    return False
 
 
 async def generate_diff_description_summary(event, gl):
@@ -297,15 +321,24 @@ def has_ai_review_label(labels):
 
 class MergeRequestHooks:
     async def merge_request_opened_event(self, event, gl, *args, **kwargs):
+        if not has_required_reviewer(event.data):
+            logging.debug("Required reviewer not found. Skipping merge_request_opened_event.")
+            return
         await generate_diff_description_summary(event, gl)
         await check_commit(event, gl)
 
     async def merge_request_updated_event(self, event, gl, *args, **kwargs):
+        if not has_required_reviewer(event.data):
+            logging.debug("Required reviewer not found. Skipping merge_request_updated_event.")
+            return
         if is_opened_merge_request(event):
             await generate_diff_description_summary(event, gl)
             await check_commit(event, gl)
 
     async def merge_request_reopen_event(self, event, gl, *args, **kwargs):
+        if not has_required_reviewer(event.data):
+            logging.debug("Required reviewer not found. Skipping merge_request_reopen_event.")
+            return
         await generate_diff_description_summary(event, gl)
         await check_commit(event, gl)
 
