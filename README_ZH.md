@@ -2,6 +2,7 @@
 
 ![Docker镜像版本（最新）](https://img.shields.io/docker/v/coolbeevip/gitlab-bot/latest)
 [![许可证](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![Pulls](https://img.shields.io/docker/pulls/coolbeevip/gitlab-bot)
 
 这是一个适用于 GitLab(13.2+) 的机器人，利用 [webhooks](https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html) 来自动化一些任务
 
