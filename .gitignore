@@ -92,3 +92,4 @@ ENV/
 # MacOS
 .idea
 .DS_Store
+/.codex/
