@@ -1,14 +1,27 @@
-init:
-	@pip install -e .
+UV ?= uv
+UV_REQUIRED_VERSION := 0.10.11
 
-lint:
-	@poetry run ruff check
+.PHONY: check-uv init lint fmt test i18n docker
 
-fmt:
-	@poetry run ruff format
+check-uv:
+	@command -v $(UV) >/dev/null 2>&1 || { echo "uv is required. Install uv $(UV_REQUIRED_VERSION) before continuing."; exit 1; }
+	@actual_version="$$( $(UV) --version 2>/dev/null | awk '{print $$2}' )"; \
+		if [ "$$actual_version" != "$(UV_REQUIRED_VERSION)" ]; then \
+			echo "uv $(UV_REQUIRED_VERSION) is required (found $$actual_version)."; \
+			exit 1; \
+		fi
+
+init: check-uv
+	@$(UV) sync --frozen
+
+lint: check-uv
+	@$(UV) run ruff check
+
+fmt: check-uv
+	@$(UV) run ruff format
 
 test: lint
-	@poetry run pytest tests
+	@$(UV) run pytest tests
 
 i18n:
 	xgettext -d base -o src/locales/gitlab-bot.pot *.py

@@ -1,0 +1,8 @@
+.git
+.github
+.venv
+dist
+team-spec
+**/__pycache__
+**/*.pyc
+**/.DS_Store

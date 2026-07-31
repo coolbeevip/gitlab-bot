@@ -55,6 +55,24 @@ This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/
 * Pipeline Events (Not yet)
 * Build Events (Not yet)
 
+## Development
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) version `0.10.11`, then create the locked development environment:
+
+```shell
+make init
+```
+
+Use the existing Makefile entry points for common tasks:
+
+```shell
+make lint
+make fmt
+make test
+```
+
+These commands use `uv.lock`; they do not install packages globally.
+
 ## How to use
 
 In order to start the GitLab Bot, you'll need to prepare three environment variables: `BOT_GITLAB_USERNAME`, `BOT_GITLAB_URL`, and `BOT_GITLAB_TOKEN`.

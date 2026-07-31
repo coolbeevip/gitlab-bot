@@ -13,31 +13,40 @@
 # limitations under the License.
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.10.11,<0.11"]
+build-backend = "uv_build"
 
-[tool.poetry]
+[project]
 name = "gitlab-bot"
 version = "1.2.1"
 description = ""
-authors = ["Lei Zhang <coolbeevip@gmail.com>"]
-packages = [
-    { include = "src"},
+authors = [
+    { name = "Lei Zhang", email = "coolbeevip@gmail.com" },
+]
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "gidgetlab[aiohttp]>=1.1.0,<2.0.0",
+    "langchain==0.3.6",
+    "langchain-openai==0.2.5",
+    "langchain-google-genai==2.0.4",
+    "python-dotenv==1.0.1",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-gidgetlab = {version = "^1.1.0", extras = ["aiohttp"]}
-langchain = "0.3.6"
-langchain-openai = "0.2.5"
-langchain_google_genai = "2.0.4"
-python-dotenv = "1.0.1"
+[dependency-groups]
+dev = [
+    "ruff>=0.7,<0.8",
+    "pytest==7.4.3",
+    "coverage==7.2.7",
+    "pytest-cov==4.1.0",
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.7"
-pytest = "7.4.3"
-coverage = "7.2.7"
-pytest-cov = "4.1.0"
+[tool.uv]
+required-version = "==0.10.11"
+
+[tool.uv.build-backend]
+module-name = "src"
+module-root = ""
+source-exclude = [".DS_Store"]
 
 [tool.ruff]
 line-length = 120
