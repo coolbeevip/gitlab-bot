@@ -93,3 +93,4 @@ ENV/
 .idea
 .DS_Store
 /.codex/
+/team-spec/
