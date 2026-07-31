@@ -3,13 +3,15 @@ name: Push Docker Image
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "src/**"
       - "*.py"
-      - "*.toml"
-      - "requirements.txt"
-      - ".github/workflows/ci.yml"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "Dockerfile"
+      - ".dockerignore"
+      - ".github/workflows/push_docker_hub.yml"
   workflow_dispatch:
 
 jobs:
