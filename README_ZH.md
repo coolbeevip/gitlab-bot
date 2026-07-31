@@ -55,6 +55,24 @@
 * 管道事件（尚未支持）
 * 构建事件（尚未支持）
 
+## 本地开发
+
+先安装 `0.10.11` 版本的 [uv](https://docs.astral.sh/uv/getting-started/installation/)，再创建与锁文件一致的开发环境：
+
+```shell
+make init
+```
+
+常用操作继续使用现有 Makefile 入口：
+
+```shell
+make lint
+make fmt
+make test
+```
+
+这些命令使用 `uv.lock`，不会向全局 Python 环境安装依赖。
+
 ## 如何使用
 
 为了启动 GitLab Bot，您需要准备三个环境变量：`BOT_GITLAB_USERNAME`、`BOT_GITLAB_URL` 和 `BOT_GITLAB_TOKEN`。
