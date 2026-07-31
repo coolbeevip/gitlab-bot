@@ -15,7 +15,7 @@ jobs:
       with:
         python-version: "3.10"
     - name: Ruff Check
-      run: poetry run ruff check
+      run: uv run ruff check
 
   test:
     runs-on: ubuntu-latest
@@ -25,5 +25,15 @@ jobs:
       uses: ./.github/actions/setup
       with:
         python-version: "3.9"
-    - name: Ruff Check
-      run: poetry run pytest tests
+    - name: Run tests
+      run: uv run pytest tests
+    - name: Build source and wheel distributions
+      run: uv build
+    - name: Smoke test wheel and source distributions
+      run: |
+        uv venv .smoke-wheel --python 3.9
+        uv pip install --python .smoke-wheel/bin/python --no-deps dist/*.whl
+        .smoke-wheel/bin/python -c "import importlib.resources as resources, src; assert resources.files('src').joinpath('prompts/DIFFS_SUMMARY_PROMPTS_TEMPLATE_en.txt').is_file(); assert resources.files('src').joinpath('locales/zh/LC_MESSAGES/gitlab-bot.mo').is_file()"
+        uv venv .smoke-sdist --python 3.9
+        uv pip install --python .smoke-sdist/bin/python --no-deps dist/*.tar.gz
+        .smoke-sdist/bin/python -c "import importlib.resources as resources, src; assert resources.files('src').joinpath('prompts/DIFFS_SUMMARY_PROMPTS_TEMPLATE_en.txt').is_file(); assert resources.files('src').joinpath('locales/zh/LC_MESSAGES/gitlab-bot.mo').is_file()"
