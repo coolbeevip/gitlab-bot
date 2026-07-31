@@ -12,22 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+FROM ghcr.io/astral-sh/uv:0.10.11 AS uv
+
 FROM python:3.9-buster AS builder
+
+COPY --from=uv /uv /bin/uv
 
 WORKDIR /usr/app
 
-# Create and activate virtual environment
-RUN python -m venv /usr/app/venv
-ENV PATH="/usr/app/venv/bin:$PATH"
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_PYTHON_DOWNLOADS=0
 
-# Install dependencies
-COPY poetry.lock pyproject.toml ./
-# Install dependencies only (no dev dependencies)
-RUN poetry export -f requirements.txt | pip install -r /dev/stdin
+# Preserve the Python 3.9 venv bootstrap packages used by gidgetlab 1.1.0.
+RUN python -m venv .venv
 
-# Install project
-COPY . .
-RUN pip install -e .
+# Install locked production dependencies before copying application code.
+COPY pyproject.toml uv.lock ./
+RUN uv lock --check && uv sync --frozen --no-dev --no-install-project --no-editable
+
+# Install the project as a non-editable package for the production stage.
+COPY src ./src
+RUN uv sync --frozen --no-dev --no-editable
 
 FROM python:3.9-slim AS production
 
@@ -42,15 +48,14 @@ ENV BOT_LANGUAGE="en" \
 
 WORKDIR /usr/app
 
-# Copy only necessary files from builder
-COPY --from=builder /usr/app/venv ./venv
-COPY src src
+# Copy only the production environment and application entry point.
+COPY --from=builder /usr/app/.venv ./venv
 COPY gitlab_bot.py gitlab_bot.py
 
 ENV PATH="/usr/app/venv/bin:$PATH"
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:${BOT_PORT}/ || exit 1
+# Probe the existing gidgetlab health endpoint with the Python standard library.
+HEALTHCHECK --interval=5s --timeout=3s --start-period=5s --retries=12 \
+  CMD ["python", "-c", "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:' + os.environ.get('BOT_PORT', '9998') + '/health', timeout=2).read()"]
 
 CMD [ "python", "gitlab_bot.py" ]
