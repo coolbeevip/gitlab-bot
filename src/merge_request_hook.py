@@ -27,9 +27,9 @@ from src.config import (
     bot_gitlab_merge_request_email_username_not_match_enabled,
     bot_gitlab_merge_request_issue_required,
     bot_gitlab_merge_request_milestone_required,
+    bot_gitlab_merge_request_reviewer_username,
     bot_gitlab_merge_request_summary_enabled,
     bot_gitlab_username,
-    bot_gitlab_merge_request_reviewer_username,
 )
 from src.i18n import _
 from src.llm import AI, ai_diffs_summary
