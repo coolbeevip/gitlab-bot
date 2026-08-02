@@ -17,6 +17,7 @@ import warnings
 
 from dotenv import load_dotenv
 
+from src.approval_notification import ApprovalNotificationHooks, LogChannel
 from src.config import (
     bot_gitlab_token,
     bot_gitlab_url,
@@ -57,6 +58,7 @@ bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab
 issue_hooks = IssueHooks()
 merge_request_hooks = MergeRequestHooks()
 note_hooks = NoteHooks()
+approval_notification_hooks = ApprovalNotificationHooks(LogChannel())
 
 
 @bot.router.register("Issue Hook", action="open")
@@ -99,6 +101,18 @@ async def merge_request_updated_event(event, gl, *args, **kwargs):
 async def merge_request_reopen_event(event, gl, *args, **kwargs):
     if not ignore_event(event):
         await merge_request_hooks.merge_request_reopen_event(event, gl, args, kwargs)
+
+
+@bot.router.register("Merge Request Hook", action="approved")
+@bot.router.register("Merge Request Hook", action="approval")
+async def merge_request_approval_event(event, gl, *args, **kwargs):
+    await approval_notification_hooks.handle(event, gl, *args, **kwargs)
+
+
+@bot.router.register("Merge Request Hook", action="unapproved")
+@bot.router.register("Merge Request Hook", action="unapproval")
+async def merge_request_unapproval_event(event, gl, *args, **kwargs):
+    await approval_notification_hooks.handle(event, gl, *args, **kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")
