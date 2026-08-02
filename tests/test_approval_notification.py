@@ -7,11 +7,8 @@ import pytest
 from gidgetlab.sansio import Event
 
 import gitlab_bot
-from src.approval_notification import (
-    ApprovalNotificationHooks,
-    LogChannel,
-    build_notification,
-)
+from src.channels.log import LogChannel
+from src.hooks.approval_notification import ApprovalNotificationHooks, build_notification
 from tests.fixtures.approval_webhook import copy_webhook
 
 

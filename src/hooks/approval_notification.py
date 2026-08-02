@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import logging
-from abc import ABC, abstractmethod
-from dataclasses import asdict, dataclass
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Mapping, Optional
+
+from ..channels.base import Channel
+from ..notifications.model import MergeRequestNotification
 
 APPROVAL_ACTIONS = frozenset(("approval", "approved", "unapproval", "unapproved"))
 NORMALIZED_ACTIONS = {
@@ -26,39 +26,14 @@ NORMALIZED_ACTIONS = {
     "unapproved": "unapproval",
 }
 
-
-@dataclass
-class MergeRequestNotification:
-    """Normalized, channel-independent information about an MR review action."""
-
-    source: str
-    event_type: str
-    action: str
-    webhook_action: str
-    message: str
-    project: Dict[str, Any]
-    merge_request: Dict[str, Any]
-    actor: Dict[str, Any]
-    occurred_at: Optional[str]
-    raw_payload: Optional[Mapping[str, Any]] = None
-
-
-class Channel(ABC):
-    """Asynchronous destination for normalized notifications."""
-
-    @abstractmethod
-    async def send(self, notification: MergeRequestNotification) -> None:
-        raise NotImplementedError
-
-
-class LogChannel(Channel):
-    """Write normalized notifications as searchable JSON log records."""
-
-    def __init__(self, logger: Optional[logging.Logger] = None):
-        self.logger = logger or logging.getLogger(__name__)
-
-    async def send(self, notification: MergeRequestNotification) -> None:
-        self.logger.info(json.dumps(asdict(notification), ensure_ascii=False))
+__all__ = [
+    "APPROVAL_ACTIONS",
+    "NORMALIZED_ACTIONS",
+    "MergeRequestNotification",
+    "Channel",
+    "build_notification",
+    "ApprovalNotificationHooks",
+]
 
 
 def _first_value(data: Mapping[str, Any], *keys: str) -> Any:

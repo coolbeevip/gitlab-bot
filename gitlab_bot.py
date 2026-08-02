@@ -17,18 +17,25 @@ import warnings
 
 from dotenv import load_dotenv
 
-from src.approval_notification import ApprovalNotificationHooks, LogChannel
+from src.channels.log import LogChannel
 from src.config import (
     bot_gitlab_token,
     bot_gitlab_url,
     bot_gitlab_username,
     bot_host,
     bot_port,
+    merge_notification_db_path,
+    merge_notification_sending_timeout_seconds,
 )
-from src.issue_hook import IssueHooks
+from src.delivery.coordinator import NotificationDelivery
+from src.delivery.idempotent_channel import DurableIdempotentChannel
+from src.delivery.sqlite import NotificationDeliveryStore
+from src.hooks.approval_notification import ApprovalNotificationHooks
+from src.hooks.issue import IssueHooks
+from src.hooks.merge_notification import MergeRequestNotificationHooks
+from src.hooks.merge_request import MergeRequestHooks
+from src.hooks.note import NoteHooks
 from src.logs import print_event
-from src.merge_request_hook import MergeRequestHooks
-from src.note_hook import NoteHooks
 
 load_dotenv()  # isort:skip
 
@@ -58,7 +65,25 @@ bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab
 issue_hooks = IssueHooks()
 merge_request_hooks = MergeRequestHooks()
 note_hooks = NoteHooks()
-approval_notification_hooks = ApprovalNotificationHooks(LogChannel())
+notification_channel = LogChannel()
+approval_notification_hooks = ApprovalNotificationHooks(notification_channel)
+notification_delivery_store = NotificationDeliveryStore(
+    merge_notification_db_path,
+    sending_timeout_seconds=merge_notification_sending_timeout_seconds,
+)
+merge_notification_channel = DurableIdempotentChannel(notification_channel, notification_delivery_store)
+merge_notification_delivery = NotificationDelivery(merge_notification_channel, notification_delivery_store)
+merge_request_notification_hooks = MergeRequestNotificationHooks(
+    merge_notification_channel,
+    delivery=merge_notification_delivery,
+)
+
+
+async def recover_merge_notification_deliveries(_app):
+    await merge_request_notification_hooks.recover()
+
+
+bot.app.on_startup.append(recover_merge_notification_deliveries)
 
 
 @bot.router.register("Issue Hook", action="open")
@@ -113,6 +138,11 @@ async def merge_request_approval_event(event, gl, *args, **kwargs):
 @bot.router.register("Merge Request Hook", action="unapproval")
 async def merge_request_unapproval_event(event, gl, *args, **kwargs):
     await approval_notification_hooks.handle(event, gl, *args, **kwargs)
+
+
+@bot.router.register("Merge Request Hook", action="merge")
+async def merge_request_merged_event(event, gl, *args, **kwargs):
+    await merge_request_notification_hooks.handle(event, gl, *args, **kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")

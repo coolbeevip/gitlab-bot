@@ -1,7 +1,7 @@
 import asyncio
 from types import SimpleNamespace
 
-import src.merge_request_hook as merge_request_hook
+import src.hooks.merge_request as merge_request_hook
 from tests.fixtures.approval_contract import (
     APPROVALS_EMPTY_GET,
     APPROVALS_OTHER_USER_GET,
