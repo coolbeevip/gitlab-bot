@@ -17,7 +17,7 @@ import logging
 from dataclasses import asdict
 from typing import Optional
 
-from ..notifications.model import MergeRequestNotification
+from ..notifications.model import Notification
 from .base import Channel
 
 
@@ -27,5 +27,5 @@ class LogChannel(Channel):
     def __init__(self, logger: Optional[logging.Logger] = None):
         self.logger = logger or logging.getLogger(__name__)
 
-    async def send(self, notification: MergeRequestNotification) -> None:
+    async def send(self, notification: Notification) -> None:
         self.logger.info(json.dumps(asdict(notification), ensure_ascii=False))

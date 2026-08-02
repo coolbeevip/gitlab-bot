@@ -35,6 +35,7 @@ from src.hooks.issue import IssueHooks
 from src.hooks.merge_notification import MergeRequestNotificationHooks
 from src.hooks.merge_request import MergeRequestHooks
 from src.hooks.note import NoteHooks
+from src.hooks.pipeline_notification import PipelineNotificationHooks
 from src.logs import print_event
 
 load_dotenv()  # isort:skip
@@ -67,6 +68,7 @@ merge_request_hooks = MergeRequestHooks()
 note_hooks = NoteHooks()
 notification_channel = LogChannel()
 approval_notification_hooks = ApprovalNotificationHooks(notification_channel)
+pipeline_notification_hooks = PipelineNotificationHooks(notification_channel)
 notification_delivery_store = NotificationDeliveryStore(
     merge_notification_db_path,
     sending_timeout_seconds=merge_notification_sending_timeout_seconds,
@@ -143,6 +145,11 @@ async def merge_request_unapproval_event(event, gl, *args, **kwargs):
 @bot.router.register("Merge Request Hook", action="merge")
 async def merge_request_merged_event(event, gl, *args, **kwargs):
     await merge_request_notification_hooks.handle(event, gl, *args, **kwargs)
+
+
+@bot.router.register("Pipeline Hook")
+async def pipeline_event(event, gl, *args, **kwargs):
+    await pipeline_notification_hooks.handle(event, gl, *args, **kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")

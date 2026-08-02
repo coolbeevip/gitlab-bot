@@ -52,7 +52,8 @@ This is a GitLab(13.2+) bot that utilizes [webhooks](https://docs.gitlab.com/ee/
 * Merge Request Events
 * Wiki Page Events (Not yet)
 * Tag Events (Not yet)
-* Pipeline Events (Not yet)
+* Pipeline Events
+    * Pipeline success/failure notifications
 * Build Events (Not yet)
 
 ## Development
@@ -123,6 +124,7 @@ To enable the GitLab Bot to respond to events, you need to configure a Webhook i
          - `Comments` (comment events)
          - `Issues events` (issue events)
          - `Merge request events` (merge request events)
+         - `Pipeline events` (Pipeline success/failure notifications)
 
 5. **Save the Webhook**:
    - Click on the `Add webhook` button to save your configuration.
