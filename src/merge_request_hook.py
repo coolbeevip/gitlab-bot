@@ -191,6 +191,7 @@ async def generate_diff_description_summary(event, gl):
 
 async def check_commit(event, gl):
     project_id = event.project_id
+    approval_attempted = False
     if event.data["event_type"] == "note":
         commit_title = event.data["merge_request"]["last_commit"]["title"]
         commit_author_name = event.data["merge_request"]["last_commit"]["author"]["name"]
@@ -224,31 +225,54 @@ async def check_commit(event, gl):
             check_email(commit_author_name, commit_author_email)
             check_commit_message(commit_title)
         if bot_gitlab_merge_request_approval_enabled:
+            approval_attempted = True
             await approval_merge_request(project_id, iid, gl)
             message = _("bot_review_success")
             await gl.post(merge_request_post_note_url, data={"body": message})
     except Exception as e:
-        message = _("bot_review_fails").format(error_message=str(e))
+        if bot_gitlab_merge_request_approval_enabled and not approval_attempted:
+            try:
+                bot_approval_revoked = await unapprove_merge_request(project_id, iid, gl)
+            except Exception as unapprove_error:
+                message = _("bot_review_fails_approval_not_revoked").format(
+                    error_message=f"{e}; unapprove error: {unapprove_error}"
+                )
+            else:
+                if bot_approval_revoked:
+                    message = _("bot_review_fails_approval_revoked").format(error_message=str(e))
+                else:
+                    message = _("bot_review_fails_approval_not_present").format(error_message=str(e))
+        elif bot_gitlab_merge_request_approval_enabled:
+            message = _("bot_review_fails_approval_unknown").format(error_message=str(e))
+        else:
+            message = _("bot_review_fails").format(error_message=str(e))
         await gl.post(merge_request_post_note_url, data={"body": message})
 
-        # Only support GitLab Premium in 13.9
-        # https://docs.gitlab.com/ee/api/merge_request_approvals.html#unapprove-merge-request
-        # merge_request_post_unapproval_url = (
-        #     f"/projects/{project_id}/merge_requests/{iid}/unapprove"
-        # )
-        # await gl.post(merge_request_post_unapproval_url, data=None)
 
-
-async def approval_merge_request(project_id, iid, gl):
+async def _bot_has_approval(project_id, iid, gl):
     query_approvals_url = f"/projects/{project_id}/merge_requests/{iid}/approvals"
     approvals = await gl.getitem(query_approvals_url)
     if approvals.get("approved"):
         for approval in approvals.get("approved_by") or []:
             user = approval.get("user") or {}
             if user.get("username") == bot_gitlab_username:
-                return
+                return True
+    return False
+
+
+async def approval_merge_request(project_id, iid, gl):
+    if await _bot_has_approval(project_id, iid, gl):
+        return
 
     await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
+
+
+async def unapprove_merge_request(project_id, iid, gl):
+    if not await _bot_has_approval(project_id, iid, gl):
+        return False
+
+    await gl.post(f"/projects/{project_id}/merge_requests/{iid}/unapprove", data=None)
+    return True
 
 
 def is_opened_merge_request(event):
