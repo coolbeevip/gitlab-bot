@@ -1,7 +1,7 @@
 UV ?= uv
 UV_REQUIRED_VERSION := 0.10.11
 
-.PHONY: check-uv init lint fmt test i18n docker
+.PHONY: check-uv init lint fmt test run start i18n docker
 
 check-uv:
 	@command -v $(UV) >/dev/null 2>&1 || { echo "uv is required. Install uv $(UV_REQUIRED_VERSION) before continuing."; exit 1; }
@@ -22,6 +22,11 @@ fmt: check-uv
 
 test: lint
 	@$(UV) run pytest tests
+
+run: check-uv
+	@$(UV) run python gitlab_bot.py
+
+start: run
 
 i18n:
 	xgettext -d base -o src/locales/gitlab-bot.pot *.py

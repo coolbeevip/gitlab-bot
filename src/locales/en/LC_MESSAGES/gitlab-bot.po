@@ -33,7 +33,27 @@ msgid "bot_review_success"
 msgstr "😊 Review validation success and approve the merge request."
 
 msgid "bot_review_fails"
-msgstr "🙁 Review validation fails and approval has been revoked."
+msgstr "🙁 Review validation failed."
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_revoked"
+msgstr "🙁 Review validation failed and the bot's approval was revoked."
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_not_present"
+msgstr "🙁 Review validation failed; no bot approval was present, so no approval was revoked."
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_not_revoked"
+msgstr "🙁 Review validation failed; the bot approval could not be revoked."
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_unknown"
+msgstr "🙁 Review validation failed; the bot approval status could not be confirmed."
 "\n"
 "{error_message}"
 

@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import logging
+import warnings
 
 from dotenv import load_dotenv
-from gidgetlab.aiohttp import GitLabBot
 
 from src.config import (
     bot_gitlab_token,
@@ -30,6 +30,27 @@ from src.merge_request_hook import MergeRequestHooks
 from src.note_hook import NoteHooks
 
 load_dotenv()  # isort:skip
+
+
+def _load_gitlab_bot():
+    # gidgetlab 1.1.0 still imports the deprecated pkg_resources API.
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            category=UserWarning,
+            message=r"pkg_resources is deprecated as an API\.",
+        )
+        warnings.filterwarnings(
+            "ignore",
+            category=DeprecationWarning,
+            message=r"Deprecated call to `pkg_resources\.declare_namespace",
+        )
+        from gidgetlab.aiohttp import GitLabBot
+
+    return GitLabBot
+
+
+GitLabBot = _load_gitlab_bot()
 
 bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab_token)
 

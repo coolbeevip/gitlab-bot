@@ -69,9 +69,10 @@ Use the existing Makefile entry points for common tasks:
 make lint
 make fmt
 make test
+make run
 ```
 
-These commands use `uv.lock`; they do not install packages globally.
+`make run` starts the local webhook service using the configuration from `.env`. `make start` is an alias. These commands use `uv.lock`; they do not install packages globally.
 
 ## How to use
 
@@ -220,6 +221,8 @@ Merge requests can only be merged if the commit message follows a specific forma
 **`BOT_GITLAB_MERGE_REQUEST_APPROVAL_ENABLED`**
 
 This parameter controls whether the bot automatically approves merge requests that pass all checks. By default, it is set to `true`, allowing the bot to automatically approve merge requests. Setting it to `false` disables automatic approval, requiring manual approval for all merge requests.
+
+When validation fails, the bot only attempts to revoke its own approval. It never resets other users' approvals; if the approval state cannot be confirmed, the failure comment reports that state instead of claiming the approval was revoked.
 
 **`BOT_GITLAB_MERGE_REQUEST_AIREVIEW_LABEL_ENABLED`**
 

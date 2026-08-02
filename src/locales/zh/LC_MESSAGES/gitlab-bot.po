@@ -33,7 +33,27 @@ msgid "bot_review_success"
 msgstr "😊合并请求验证成功，批准合并请求。"
 
 msgid "bot_review_fails"
-msgstr "🙁合并请求验证失败，并撤回批准。"
+msgstr "🙁合并请求验证失败。"
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_revoked"
+msgstr "🙁合并请求验证失败，机器人审批已撤销。"
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_not_present"
+msgstr "🙁合并请求验证失败；未发现机器人审批，因此没有撤销任何审批。"
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_not_revoked"
+msgstr "🙁合并请求验证失败；机器人审批未能撤销。"
+"\n"
+"{error_message}"
+
+msgid "bot_review_fails_approval_unknown"
+msgstr "🙁合并请求验证失败；无法确认机器人审批状态。"
 "\n"
 "{error_message}"
 
