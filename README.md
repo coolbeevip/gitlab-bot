@@ -132,6 +132,28 @@ To enable the GitLab Bot to respond to events, you need to configure a Webhook i
 6. **Test the Webhook (Optional)**:
    - To confirm if the Webhook is set up correctly, locate the newly added Webhook in the Webhooks list and use the `Test` button to send a test request.
 
+## Feishu Notifications
+
+When enabled, the bot sends normalized MR approval, MR merge, and Pipeline success/failure notifications to one Feishu group while keeping the structured log channel. Feishu is disabled by default.
+
+Before enabling it, create a Feishu custom app, grant permission to send group messages, add the app to the target group, and confirm the runtime can reach `https://open.feishu.cn` over HTTPS.
+
+```shell
+FEISHU_ENABLED=true
+FEISHU_APP_ID=<Feishu app ID>
+FEISHU_APP_SECRET=<Feishu app secret>
+FEISHU_CHAT_ID=<target chat ID>
+# Optional:
+FEISHU_BOT_OPEN_ID=<open ID to mention>
+FEISHU_REQUEST_TIMEOUT_SECONDS=10
+```
+
+`FEISHU_APP_SECRET` must be injected as a secret and never committed or printed. The MVP sends text messages to one `FEISHU_CHAT_ID`; cards, rich text, multiple groups, and Feishu callbacks are not supported.
+
+MR merge and Pipeline Feishu deliveries are persisted with per-target idempotency and can be recovered or replayed after failures. Approval/unapproval keeps the existing direct-send failure behavior. To roll back, set `FEISHU_ENABLED=false`; existing log and GitLab processing remain available.
+
+Recovery can be tuned with `MERGE_NOTIFICATION_MAX_ATTEMPTS` (default `5`) and `MERGE_NOTIFICATION_RETRY_BACKOFF_SECONDS` (default `1`). Automatic retries are bounded; failed records remain available for manual replay.
+
 ## Environment Variables
 
 **`BOT_GITLAB_USERNAME` / `BOT_GITLAB_URL` / `BOT_GITLAB_TOKEN`**
@@ -149,6 +171,10 @@ Supports both Chinese (zh) and English (en) languages by default.
 **`BOT_HOST` / `BOT_PORT`**
 
 These variables specify the host and port on which the bot will run. By default, the bot will run on the IP address 0.0.0.0 and port number 9998.
+
+**`FEISHU_ENABLED` / `FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_CHAT_ID` / `FEISHU_BOT_OPEN_ID` / `FEISHU_REQUEST_TIMEOUT_SECONDS`**
+
+These variables configure the optional Feishu notification channel. `FEISHU_ENABLED` defaults to `false`; the other required values are checked when it is enabled. Keep the App Secret outside source control and logs. See [Feishu Notifications](#feishu-notifications) for permissions, rollback, and delivery recovery behavior.
 
 **`BOT_GIT_EMAIL_DOMAIN`**
 

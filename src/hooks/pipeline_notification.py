@@ -202,9 +202,10 @@ def build_pipeline_notification(data: Mapping[str, Any]) -> PipelineNotification
 class PipelineNotificationHooks:
     """Handle successful and failed GitLab Pipeline webhooks."""
 
-    def __init__(self, channel: Channel, logger: Optional[logging.Logger] = None):
+    def __init__(self, channel: Channel, logger: Optional[logging.Logger] = None, delivery=None):
         self.channel = channel
         self.logger = logger or logging.getLogger(__name__)
+        self.delivery = delivery
 
     async def handle(self, event, *args, **kwargs) -> None:
         try:
@@ -226,6 +227,10 @@ class PipelineNotificationHooks:
             self.logger.error("invalid pipeline webhook: %s", exc)
             return
 
+        if self.delivery is not None:
+            await self.delivery.deliver(notification)
+            return
+
         try:
             await self.channel.send(notification)
         except Exception as exc:
@@ -237,3 +242,13 @@ class PipelineNotificationHooks:
                 exc,
                 exc_info=True,
             )
+
+    async def recover(self) -> int:
+        if self.delivery is None:
+            return 0
+        return await self.delivery.recover()
+
+    async def replay_failed(self) -> int:
+        if self.delivery is None:
+            return 0
+        return await self.delivery.replay_failed()

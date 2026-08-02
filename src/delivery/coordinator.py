@@ -18,7 +18,7 @@ from collections import Counter
 from typing import Any, List, Optional
 
 from ..channels.base import Channel
-from ..notifications.model import MergeRequestNotification
+from ..notifications.model import Notification
 from .sqlite import DeliveryRecord, NotificationDeliveryStore
 
 
@@ -36,21 +36,25 @@ class NotificationDelivery:
         self.logger = logger or logging.getLogger(__name__)
         self.counters = Counter()
 
-    def _log(self, level: int, event: str, notification: MergeRequestNotification, **extra: Any) -> None:
+    def _log(self, level: int, event: str, notification: Notification, **extra: Any) -> None:
+        merge_request = notification.merge_request or {}
+        pipeline = notification.pipeline if hasattr(notification, "pipeline") else {}
         payload = {
             "event": "merge_notification_delivery",
             "action": event,
             "idempotency_key": notification.idempotency_key,
             "project": notification.project.get("path") or notification.project.get("id"),
-            "mr_iid": notification.merge_request.get("iid"),
+            "mr_iid": merge_request.get("iid"),
+            "pipeline_id": pipeline.get("id"),
+            "notification_type": type(notification).__name__,
         }
         payload.update(extra)
         self.logger.log(level, json.dumps(payload, ensure_ascii=False, sort_keys=True))
         self.counters[event] += 1
 
-    async def deliver(self, notification: MergeRequestNotification) -> bool:
+    async def deliver(self, notification: Notification, *, force: bool = False) -> bool:
         try:
-            decision = self.store.begin_delivery(notification)
+            decision = self.store.begin_delivery(notification, force=force)
         except Exception as exc:
             self.counters["failed"] += 1
             self.logger.error("notification delivery state failed: %s", exc, exc_info=True)
@@ -87,7 +91,7 @@ class NotificationDelivery:
     async def replay_failed(self) -> int:
         replayed = 0
         for record in self.store.failed_deliveries():
-            if await self.deliver(record.notification):
+            if await self.deliver(record.notification, force=True):
                 replayed += 1
         if replayed:
             self.logger.info(

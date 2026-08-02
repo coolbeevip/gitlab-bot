@@ -129,7 +129,29 @@ coolbeevip/gitlab-bot
 
 6. **测试 Webhook（可选）**：
    - 为确认 Webhook 是否设置正确，在 Webhooks 列表中找到新添加的 Webhook，并使用 `测试` 按钮发送测试请求。
-   
+
+## 飞书通知
+
+启用后，Bot 会在保留结构化日志的同时，将 MR 审批、MR 合并和 Pipeline 成功/失败通知发送到一个飞书群。飞书默认关闭。
+
+启用前请创建飞书自建应用，授予发送群消息权限，将应用加入目标群，并确认运行环境可以通过 HTTPS 访问 `https://open.feishu.cn`。
+
+```shell
+FEISHU_ENABLED=true
+FEISHU_APP_ID=<飞书应用 App ID>
+FEISHU_APP_SECRET=<飞书应用 Secret>
+FEISHU_CHAT_ID=<目标群 Chat ID>
+# 可选：
+FEISHU_BOT_OPEN_ID=<需要被 @ 的用户 Open ID>
+FEISHU_REQUEST_TIMEOUT_SECONDS=10
+```
+
+`FEISHU_APP_SECRET` 必须通过 Secret 注入，不能提交到仓库或打印到日志。MVP 只向一个 `FEISHU_CHAT_ID` 发送文本消息，不支持卡片、富文本、多群路由和飞书回调。
+
+MR 合并和 Pipeline 的飞书投递会按目标持久化幂等状态，失败后支持恢复或补发；审批/取消审批沿用现有直接发送失败记录行为。回滚时设置 `FEISHU_ENABLED=false`，日志和 GitLab 处理仍保持可用。
+
+可通过 `MERGE_NOTIFICATION_MAX_ATTEMPTS`（默认 `5`）和 `MERGE_NOTIFICATION_RETRY_BACKOFF_SECONDS`（默认 `1`）调整恢复策略。自动重试次数有限，失败记录仍可人工补发。
+
 ## 环境变量
 
 **`BOT_GITLAB_USERNAME` / `BOT_GITLAB_URL` / `BOT_GITLAB_TOKEN`**
@@ -147,6 +169,10 @@ coolbeevip/gitlab-bot
 **`BOT_HOST` / `BOT_PORT`**
 
 这些变量指定机器人运行的主机和端口。默认情况下，机器人将在 IP 地址 0.0.0.0 和端口号 9998 上运行。
+
+**`FEISHU_ENABLED` / `FEISHU_APP_ID` / `FEISHU_APP_SECRET` / `FEISHU_CHAT_ID` / `FEISHU_BOT_OPEN_ID` / `FEISHU_REQUEST_TIMEOUT_SECONDS`**
+
+这些变量用于配置可选的飞书通知 Channel。`FEISHU_ENABLED` 默认是 `false`；启用后会校验其他必填配置。请将 App Secret 保存在 Secret 管理系统中，不要提交到仓库或写入日志。权限、回滚和投递恢复说明见[飞书通知](#飞书通知)。
 
 **`BOT_GIT_EMAIL_DOMAIN`**
 
