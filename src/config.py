@@ -159,3 +159,12 @@ bot_gitlab_merge_request_aireview_label_enabled = (
 )
 
 bot_gitlab_merge_request_reviewer_username = os.getenv("BOT_GITLAB_MERGE_REQUEST_REVIEWER_USERNAME", None)
+
+# merge notification delivery
+merge_notification_db_path = os.getenv(
+    "MERGE_NOTIFICATION_DB_PATH",
+    "data/merge-notifications.sqlite3",
+)
+merge_notification_sending_timeout_seconds = float(
+    os.getenv("MERGE_NOTIFICATION_SENDING_TIMEOUT_SECONDS", "300")
+)

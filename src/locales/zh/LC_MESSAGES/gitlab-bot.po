@@ -17,18 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: merge_request_hook.py:16
+#: hooks/merge_request.py:16
 msgid "commit_subject_max_length"
 msgstr "🙁 主题行不能超过 {commit_subject_max_length} 个字符"
 
-#: merge_request_hook.py:27
+#: hooks/merge_request.py:27
 msgid "milestone_is_required"
 msgstr "🙁 必须选择里程碑"
 
 msgid "issue_num_is_required"
 msgstr "🙁 只有当源分支与现有问题相关联时，才能合并合并请求"
 
-#: merge_request_hook.py:83
+#: hooks/merge_request.py:83
 msgid "bot_review_success"
 msgstr "😊合并请求验证成功，批准合并请求。"
 

@@ -17,18 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: merge_request_hook.py:16
+#: hooks/merge_request.py:16
 msgid "commit_subject_max_length"
 msgstr "🙁 The subject line must not exceed {commit_subject_max_length} characters."
 
-#: merge_request_hook.py:27
+#: hooks/merge_request.py:27
 msgid "milestone_is_required"
 msgstr "🙁 Milestone is required."
 
 msgid "issue_num_is_required"
 msgstr "Merge requests can only be merged if the source branch is associated with an existing issue."
 
-#: merge_request_hook.py:83
+#: hooks/merge_request.py:83
 msgid "bot_review_success"
 msgstr "😊 Review validation success and approve the merge request."
 
