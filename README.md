@@ -69,9 +69,10 @@ Use the existing Makefile entry points for common tasks:
 make lint
 make fmt
 make test
+make run
 ```
 
-These commands use `uv.lock`; they do not install packages globally.
+`make run` starts the local webhook service using the configuration from `.env`. `make start` is an alias. These commands use `uv.lock`; they do not install packages globally.
 
 ## How to use
 
