@@ -25,6 +25,7 @@ authors = [
 ]
 requires-python = ">=3.9,<4.0"
 dependencies = [
+    "aiohttp>=3.11,<4.0",
     "gidgetlab[aiohttp]>=1.1.0,<2.0.0",
     "setuptools<81",
     "langchain==0.3.6",

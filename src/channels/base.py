@@ -14,12 +14,12 @@
 
 from abc import ABC, abstractmethod
 
-from ..notifications.model import MergeRequestNotification
+from ..notifications.model import Notification
 
 
 class Channel(ABC):
     """Asynchronous destination for normalized notifications."""
 
     @abstractmethod
-    async def send(self, notification: MergeRequestNotification) -> None:
+    async def send(self, notification: Notification) -> None:
         raise NotImplementedError

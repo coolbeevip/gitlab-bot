@@ -13,6 +13,14 @@
 # limitations under the License.
 
 from .base import Channel
+from .dispatcher import NotificationDispatcher, NotificationDispatchError
+from .feishu import FeishuChannel
 from .log import LogChannel
 
-__all__ = ["Channel", "LogChannel"]
+__all__ = [
+    "Channel",
+    "FeishuChannel",
+    "LogChannel",
+    "NotificationDispatchError",
+    "NotificationDispatcher",
+]

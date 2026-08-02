@@ -7,8 +7,10 @@ from gidgetlab.sansio import Event
 import gitlab_bot
 from src.hooks.approval_notification import ApprovalNotificationHooks
 from src.hooks.merge_notification import MergeRequestNotificationHooks
+from src.hooks.pipeline_notification import PipelineNotificationHooks
 from tests.fixtures.approval_webhook import copy_webhook
 from tests.fixtures.merge_webhook import copy_merge_webhook
+from tests.fixtures.pipeline_webhook import copy_pipeline_webhook
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = PROJECT_ROOT / "src"
@@ -34,6 +36,7 @@ def test_notification_hooks_only_depend_on_notification_model_and_channel_contra
     notification_hook_paths = (
         SRC_ROOT / "hooks" / "approval_notification.py",
         SRC_ROOT / "hooks" / "merge_notification.py",
+        SRC_ROOT / "hooks" / "pipeline_notification.py",
     )
     for path in notification_hook_paths:
         imports = tuple(_import_modules(path))
@@ -102,3 +105,13 @@ def test_startup_recovery_and_notification_routes_are_registered_once(monkeypatc
         )
     )
     assert len(merge_channel.notifications) == 1
+
+    pipeline_channel = RecordingChannel()
+    monkeypatch.setattr(gitlab_bot, "pipeline_notification_hooks", PipelineNotificationHooks(pipeline_channel))
+    asyncio.run(
+        gitlab_bot.bot.router.dispatch(
+            Event(copy_pipeline_webhook(status="success"), event="Pipeline Hook"),
+            None,
+        )
+    )
+    assert len(pipeline_channel.notifications) == 1

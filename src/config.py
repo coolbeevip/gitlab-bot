@@ -168,3 +168,13 @@ merge_notification_db_path = os.getenv(
 merge_notification_sending_timeout_seconds = float(
     os.getenv("MERGE_NOTIFICATION_SENDING_TIMEOUT_SECONDS", "300")
 )
+merge_notification_max_attempts = int(os.getenv("MERGE_NOTIFICATION_MAX_ATTEMPTS", "5"))
+merge_notification_retry_backoff_seconds = float(os.getenv("MERGE_NOTIFICATION_RETRY_BACKOFF_SECONDS", "1"))
+
+# Feishu notification channel
+feishu_enabled = os.getenv("FEISHU_ENABLED", "false").lower() == "true"
+feishu_app_id = os.getenv("FEISHU_APP_ID")
+feishu_app_secret = os.getenv("FEISHU_APP_SECRET")
+feishu_chat_id = os.getenv("FEISHU_CHAT_ID")
+feishu_bot_open_id = os.getenv("FEISHU_BOT_OPEN_ID")
+feishu_request_timeout_seconds = float(os.getenv("FEISHU_REQUEST_TIMEOUT_SECONDS", "10"))

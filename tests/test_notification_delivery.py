@@ -117,6 +117,39 @@ def test_channel_failure_is_retryable_and_reuses_key(tmp_path):
     assert store.get_delivery(notification.idempotency_key).attempts == 2
 
 
+def test_retry_backoff_defers_automatic_retry_until_due(tmp_path):
+    channel = FailingOnceChannel()
+    now = [1000.0]
+    store = NotificationDeliveryStore(
+        str(tmp_path / "delivery.sqlite3"),
+        retry_backoff_seconds=10,
+        clock=lambda: now[0],
+    )
+    delivery = NotificationDelivery(DurableIdempotentChannel(channel, store), store)
+    notification = make_notification()
+
+    assert asyncio.run(delivery.deliver(notification)) is False
+    assert asyncio.run(delivery.deliver(notification)) is False
+    assert channel.calls == 1
+
+    now[0] += 10
+    assert asyncio.run(delivery.deliver(notification)) is True
+    assert channel.calls == 2
+
+
+def test_retry_attempts_are_bounded_but_manual_replay_can_continue(tmp_path):
+    channel = FailingOnceChannel()
+    store = NotificationDeliveryStore(str(tmp_path / "delivery.sqlite3"), max_attempts=1)
+    delivery = NotificationDelivery(DurableIdempotentChannel(channel, store), store)
+    notification = make_notification()
+
+    assert asyncio.run(delivery.deliver(notification)) is False
+    assert asyncio.run(delivery.deliver(notification)) is False
+    assert channel.calls == 1
+    assert asyncio.run(delivery.replay_failed()) == 1
+    assert channel.calls == 2
+
+
 def test_restart_recovers_failed_delivery_and_manual_replay(tmp_path):
     first_channel = FailingOnceChannel()
     store, first_delivery = make_delivery(tmp_path, first_channel)

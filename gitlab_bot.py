@@ -17,6 +17,8 @@ import warnings
 
 from dotenv import load_dotenv
 
+from src.channels.dispatcher import NotificationDispatcher
+from src.channels.feishu import FeishuChannel
 from src.channels.log import LogChannel
 from src.config import (
     bot_gitlab_token,
@@ -24,7 +26,15 @@ from src.config import (
     bot_gitlab_username,
     bot_host,
     bot_port,
+    feishu_app_id,
+    feishu_app_secret,
+    feishu_bot_open_id,
+    feishu_chat_id,
+    feishu_enabled,
+    feishu_request_timeout_seconds,
     merge_notification_db_path,
+    merge_notification_max_attempts,
+    merge_notification_retry_backoff_seconds,
     merge_notification_sending_timeout_seconds,
 )
 from src.delivery.coordinator import NotificationDelivery
@@ -35,6 +45,7 @@ from src.hooks.issue import IssueHooks
 from src.hooks.merge_notification import MergeRequestNotificationHooks
 from src.hooks.merge_request import MergeRequestHooks
 from src.hooks.note import NoteHooks
+from src.hooks.pipeline_notification import PipelineNotificationHooks
 from src.logs import print_event
 
 load_dotenv()  # isort:skip
@@ -65,22 +76,51 @@ bot = GitLabBot(bot_gitlab_username, url=bot_gitlab_url, access_token=bot_gitlab
 issue_hooks = IssueHooks()
 merge_request_hooks = MergeRequestHooks()
 note_hooks = NoteHooks()
-notification_channel = LogChannel()
+
+
+def _build_notification_targets():
+    targets = {"log": LogChannel()}
+    if feishu_enabled:
+        targets["feishu"] = FeishuChannel.from_environment(
+            app_id=feishu_app_id,
+            app_secret=feishu_app_secret,
+            chat_id=feishu_chat_id,
+            bot_open_id=feishu_bot_open_id,
+            timeout_seconds=feishu_request_timeout_seconds,
+        )
+    return targets
+
+
+notification_targets = _build_notification_targets()
+notification_channel = NotificationDispatcher(notification_targets)
 approval_notification_hooks = ApprovalNotificationHooks(notification_channel)
 notification_delivery_store = NotificationDeliveryStore(
     merge_notification_db_path,
     sending_timeout_seconds=merge_notification_sending_timeout_seconds,
+    max_attempts=merge_notification_max_attempts,
+    retry_backoff_seconds=merge_notification_retry_backoff_seconds,
 )
-merge_notification_channel = DurableIdempotentChannel(notification_channel, notification_delivery_store)
+durable_notification_targets = {
+    target: DurableIdempotentChannel(channel, notification_delivery_store, delivery_target=target)
+    for target, channel in notification_targets.items()
+}
+merge_notification_channel = NotificationDispatcher(durable_notification_targets)
 merge_notification_delivery = NotificationDelivery(merge_notification_channel, notification_delivery_store)
+pipeline_notification_delivery = NotificationDelivery(merge_notification_channel, notification_delivery_store)
 merge_request_notification_hooks = MergeRequestNotificationHooks(
     merge_notification_channel,
     delivery=merge_notification_delivery,
 )
+pipeline_notification_hooks = PipelineNotificationHooks(
+    merge_notification_channel,
+    delivery=pipeline_notification_delivery,
+)
 
 
 async def recover_merge_notification_deliveries(_app):
-    await merge_request_notification_hooks.recover()
+    recovered_merge_notifications = await merge_request_notification_hooks.recover()
+    recovered_pipeline_notifications = await pipeline_notification_hooks.recover()
+    return recovered_merge_notifications + recovered_pipeline_notifications
 
 
 bot.app.on_startup.append(recover_merge_notification_deliveries)
@@ -143,6 +183,11 @@ async def merge_request_unapproval_event(event, gl, *args, **kwargs):
 @bot.router.register("Merge Request Hook", action="merge")
 async def merge_request_merged_event(event, gl, *args, **kwargs):
     await merge_request_notification_hooks.handle(event, gl, *args, **kwargs)
+
+
+@bot.router.register("Pipeline Hook")
+async def pipeline_event(event, gl, *args, **kwargs):
+    await pipeline_notification_hooks.handle(event, gl, *args, **kwargs)
 
 
 @bot.router.register("Note Hook", noteable_type="MergeRequest")

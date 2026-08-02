@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, Mapping, Optional, Union
 
 
 @dataclass
@@ -32,3 +32,25 @@ class MergeRequestNotification:
     raw_payload: Optional[Mapping[str, Any]] = None
     triggered_by: Optional[Dict[str, Any]] = None
     idempotency_key: Optional[str] = None
+
+
+@dataclass
+class PipelineNotification:
+    """Normalized, channel-independent information about a pipeline status."""
+
+    source: str
+    event_type: str
+    action: str
+    webhook_action: str
+    status: str
+    message: str
+    project: Dict[str, Any]
+    pipeline: Dict[str, Any]
+    actor: Dict[str, Any]
+    occurred_at: Optional[str]
+    merge_request: Optional[Dict[str, Any]] = None
+    raw_payload: Optional[Mapping[str, Any]] = None
+    idempotency_key: Optional[str] = None
+
+
+Notification = Union[MergeRequestNotification, PipelineNotification]
