@@ -224,8 +224,8 @@ async def check_commit(event, gl):
             check_email(commit_author_name, commit_author_email)
             check_commit_message(commit_title)
         if bot_gitlab_merge_request_approval_enabled:
+            await approval_merge_request(project_id, iid, gl)
             message = _("bot_review_success")
-            approval_merge_request(project_id, iid, gl)
             await gl.post(merge_request_post_note_url, data={"body": message})
     except Exception as e:
         message = _("bot_review_fails").format(error_message=str(e))
