@@ -241,15 +241,14 @@ async def check_commit(event, gl):
 
 async def approval_merge_request(project_id, iid, gl):
     query_approvals_url = f"/projects/{project_id}/merge_requests/{iid}/approvals"
-    approvals = gl.getitem(query_approvals_url)
-    bot_approved = False
-    if approvals.approved:
-        for approval in approvals.approved_by:
-            if approval.user.username == bot_gitlab_username:
-                bot_approved = True
+    approvals = await gl.getitem(query_approvals_url)
+    if approvals.get("approved"):
+        for approval in approvals.get("approved_by") or []:
+            user = approval.get("user") or {}
+            if user.get("username") == bot_gitlab_username:
                 return
-    if not bot_approved:
-        await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
+
+    await gl.post(f"/projects/{project_id}/merge_requests/{iid}/approve", data=None)
 
 
 def is_opened_merge_request(event):
